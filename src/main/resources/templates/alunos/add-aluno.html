@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Aluno</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <h1>Criar Aluno</h1>
+    <form th:action="@{/alunos/add}" method="post">
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+        </div>
+        <div>
+            <button type="submit">Add Aluno</button>
+        </div>
+    </form>
+</body>
+</html>
