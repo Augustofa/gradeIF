@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Criar Aluno</h1>
-    <form class="col-lg-6" th:action="@{/alunos/salvar}" th:object="${aluno}" method="post">
+    <form class="col-lg-6" th:action="@{/alunos/atualizar/{id}(id=${aluno.id})}" th:object="${aluno}" method="post">
         <div>
             <label for="nome">Nome:</label>
             <input type="text" th:field="*{nome}" id="nome" placeholder="Nome">
@@ -31,7 +31,7 @@
             <input type="text" th:field="*{semestreIngresso}" id="semestreIngresso" name="semestreIngresso" placeholder="2025">
         </div>
         <div>
-            <button type="submit">Adicionar Aluno</button>
+            <button type="submit">Atualizar Aluno</button>
         </div>
     </form>
 </body>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/navbar.html :: header}">
+<body>
+    <div>
+        <div th:insert="~{fragments/navbar.html :: navbar}"></div>
+        <div th:switch="${alunos}">
+            <h2 th:case="null">Sem alunos cadastrados</h2>
+            <div th:case="*">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>Curso</th>
+                            <th>Semestre de Ingresso</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="aluno : ${alunos}">
+                            <td th:text="${aluno.id}"></td>
+                            <td th:text="${aluno.nome}"></td>
+                            <td th:text="${aluno.cpf}"></td>
+                            <td th:text="${aluno.curso}"></td>
+                            <td th:text="${aluno.semestreIngresso}"></td>
+                            <td>
+                                <a th:href="@{/alunos/editar/{id}(id=${aluno.id})}" class="btn btn-primary">Editar</a>
+                                <a th:href="@{/alunos/deletar/{id}(id=${aluno.id})}" class="btn btn-danger">Excluir</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <a th:href="@{/alunos/criar}" class="btn btn-success">Adicionar Novo Aluno</a>
+        </div>
+    </div>
+</body>
+</html>

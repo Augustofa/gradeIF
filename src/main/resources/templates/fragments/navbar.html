@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="header">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>GradeIF</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/nav-style.css">
+    <script src="js/nav-func.js"></script>
+</head>
+<body th:fragment="navbar" id="main">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <button class="navbar-toggler" type="button" onclick="toggleNav()">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="/">GradeIF</a>
+    </nav>
+
+    <div id="sidebar" class="bg-dark">
+        <a th:href="@{alunos}">Alunos</a>
+        <a href="#">Link 2</a>
+        <a href="#">Link 3</a>
+        <a href="#">Link 4</a>
+    </div>
+
+    <div id="content">
+</body>
+</html>
