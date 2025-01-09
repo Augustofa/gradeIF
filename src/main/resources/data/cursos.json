@@ -1,0 +1,20 @@
+[
+    {
+        "id": null,
+        "nome": "Engenharia Eletrica",
+        "quantSemestres": 10,
+        "descricao": "Curso de Engenharia Eletrica com foco em sistemas de energia e automação."
+    },
+    {
+        "id": null,
+        "nome": "Analise e Desenvolvimento de Sistemas",
+        "quantSemestres": 6,
+        "descricao": "Curso de Analise e Desenvolvimento de Sistemas com foco em programação e desenvolvimento de software."
+    },
+    {
+        "id": null,
+        "nome": "Gestão Comercial",
+        "quantSemestres": 5,
+        "descricao": "Curso de Gestão Comercial com foco em estratégias de mercado e administração de negócios."
+    }
+]

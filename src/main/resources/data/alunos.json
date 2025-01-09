@@ -1,0 +1,23 @@
+[
+    {
+        "id": null,
+        "nome": "João Silva",
+        "cpf": "123.456.789-00",
+        "curso": "Engenharia Elétrica",
+        "semestreIngresso": "2022-1"
+    },
+    {
+        "id": null,
+        "nome": "Maria Oliveira",
+        "cpf": "987.654.321-00",
+        "curso": "Análise e Desenvolvimento de Sistemas",
+        "semestreIngresso": "2023-1"
+    },
+    {
+        "id": null,
+        "nome": "Pedro Santos",
+        "cpf": "456.789.123-00",
+        "curso": "Gestão Comercial",
+        "semestreIngresso": "2024-2"
+    }
+]

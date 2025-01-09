@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Criar Aluno</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-</head>
+<head th:replace="~{fragments/navbar.html :: header}">
 <body>
+    <div th:insert="~{fragments/navbar.html :: navbar}"></div>
     <h1>Criar Aluno</h1>
     <form class="col-lg-6" th:action="@{/alunos/atualizar/{id}(id=${aluno.id})}" th:object="${aluno}" method="post">
         <div>

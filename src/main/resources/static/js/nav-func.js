@@ -1,5 +1,4 @@
 function toggleNav() {
-    console.log("teste");
     var sidebar = document.getElementById("sidebar");
     var main = document.getElementById("main");
     if (sidebar.style.width === "250px") {
