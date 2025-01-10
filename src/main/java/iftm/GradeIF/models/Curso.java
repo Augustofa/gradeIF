@@ -1,5 +1,6 @@
 package iftm.GradeIF.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +17,7 @@ public class Curso {
     private int id;
 
     @NotBlank(message = "Nome é obrigatório")
+    @Column(unique = true)
     private String nome;
 
     @NotNull(message = "Quantidade de semestres é obrigatório")

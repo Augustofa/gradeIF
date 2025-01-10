@@ -17,10 +17,9 @@
         </div>
         <div>
             <label for="curso">Curso:</label>
-            <select id="curso" th:field="*{curso}" name="curso">
-                <option value="Análise e Desenvolvimento de Sistemas">Análise e Desenvolvimento de Sistemas</option>
-                <option value="Engenharia Elétrica">Engenharia Elétrica</option>
-                <option value="Gestão Comercial">Gestão Comercial</option>
+            <select id="curso" th:field="*{nomeCurso}" name="curso">
+                <option value="">Selecione o Curso</option>
+                <option th:each="curso : ${cursos}" th:value="${curso.nome}" th:text="${curso.nome}"></option>
             </select>
         </div>
         <div>

@@ -1,13 +1,13 @@
 [
     {
         "id": null,
-        "nome": "Engenharia Eletrica",
+        "nome": "Engenharia Elétrica",
         "quantSemestres": 10,
         "descricao": "Curso de Engenharia Eletrica com foco em sistemas de energia e automação."
     },
     {
         "id": null,
-        "nome": "Analise e Desenvolvimento de Sistemas",
+        "nome": "Análise e Desenvolvimento de Sistemas",
         "quantSemestres": 6,
         "descricao": "Curso de Analise e Desenvolvimento de Sistemas com foco em programação e desenvolvimento de software."
     },

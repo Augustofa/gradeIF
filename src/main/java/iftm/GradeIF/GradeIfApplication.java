@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import iftm.GradeIF.models.Aluno;
 import iftm.GradeIF.models.Curso;
+import iftm.GradeIF.controllers.AlunoController;
 import iftm.GradeIF.repositories.AlunoRepository;
 import iftm.GradeIF.repositories.CursoRepository;
 
@@ -41,14 +42,16 @@ public class GradeIfApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         System.out.println("Carregando dados...");
-		if(repositoryAlunos.count() == 0) {
-			try (InputStream inputStream = TypeReference.class.getResourceAsStream("/data/alunos.json")) {
-				repositoryAlunos.saveAll(objectMapper.readValue(inputStream,new TypeReference<List<Aluno>>(){}));
-			}
-		}
 		if(repositoryCursos.count() == 0) {
 			try (InputStream inputStream = TypeReference.class.getResourceAsStream("/data/cursos.json")) {
 				repositoryCursos.saveAll(objectMapper.readValue(inputStream, new TypeReference<List<Curso>>(){}));
+			}
+		}
+		if(repositoryAlunos.count() == 0) {
+			try (InputStream inputStream = TypeReference.class.getResourceAsStream("/data/alunos.json")) {
+				// repositoryAlunos.saveAll(objectMapper.readValue(inputStream,new TypeReference<List<Aluno>>(){}));
+				AlunoController alunoController = new AlunoController(repositoryAlunos, repositoryCursos);
+				alunoController.saveAllAlunos(objectMapper.readValue(inputStream, new TypeReference<List<Aluno>>(){}));
 			}
 		}
     }
