@@ -1,0 +1,127 @@
+[
+    {
+        "id": null,
+        "codigo": "CS101",
+        "nome": "Introdução à Ciência da Computação",
+        "sala": "Sala 101",
+        "professor": {
+            "id": null,
+            "cpf": "111.222.333-44",
+            "nome": "Ana Pereira"
+        },
+        "vagas": 30,
+        "creditos": 4,
+        "strPreRequisitos": [],
+        "strPosRequisitos": ["CS201"],
+        "horarios": [{
+            "id": null,
+            "dia": "Segunda-feira",
+            "horaInicio": "19:00",
+            "horaFim": "20:40"
+        },{
+            "id": null,
+            "dia": "Terça-feira",
+            "horaInicio": "19:00",
+            "horaFim": "20:40"
+        }]
+    },
+    {
+        "id": null,
+        "codigo": "CS102",
+        "nome": "Lógica de Programação",
+        "sala": "Sala 104",
+        "professor": {
+            "id": null,
+            "cpf": "999.000.111-22",
+            "nome": "Clara Mendes"
+        },
+        "vagas": 35,
+        "creditos": 3,
+        "strPreRequisitos": [],
+        "strPosRequisitos": [],
+        "horarios": [{
+            "id": null,
+            "dia": "Quarta-feira",
+            "horaInicio": "20:50",
+            "horaFim": "22:30"
+        }]
+    },
+    {
+        "id": null,
+        "codigo": "CS201",
+        "nome": "Estruturas de Dados",
+        "sala": "Sala 102",
+        "professor": {
+            "id": null,
+            "cpf": "555.666.777-88",
+            "nome": "Bruno Costa"
+        },
+        "vagas": 25,
+        "creditos": 3,
+        "strPreRequisitos": ["CS101"],
+        "strPosRequisitos": ["CS301"],
+        "horarios": [{
+            "id": null,
+            "dia": "Segunda-feira",
+            "horaInicio": "19:00",
+            "horaFim": "20:40"
+        },{
+            "id": null,
+            "dia": "Sexta-feira",
+            "horaInicio": "19:00",
+            "horaFim": "20:40"
+        }]
+    },
+    {
+        "id": null,
+        "codigo": "CS103",
+        "nome": "Fundamentos de Redes de Computadores",
+        "sala": "Sala 105",
+        "professor": {
+            "id": null,
+            "cpf": "333.444.555-66",
+            "nome": "Daniel Silva"
+        },
+        "vagas": 40,
+        "creditos": 3,
+        "strPreRequisitos": [],
+        "strPosRequisitos": [],
+        "horarios": [{
+            "id": null,
+            "dia": "Quinta-feira",
+            "horaInicio": "20:50",
+            "horaFim": "22:30"
+        }, {
+            "id": null,
+            "dia": "Sexta-feira",
+            "horaInicio": "19:00",
+            "horaFim": "20:40"
+        }]
+    },
+    {
+        "id": null,
+        "codigo": "CS301",
+        "nome": "Algoritmos",
+        "sala": "Sala 103",
+        "professor": {
+            "id": null,
+            "cpf": "777.888.999-00",
+            "nome": "Eva Santos"
+        },
+        "vagas": 20,
+        "creditos": 4,
+        "strPreRequisitos": ["CS201"],
+        "strPosRequisitos": [],
+        "horarios": [{
+            "id": null,
+            "dia": "Quarta-feira",
+            "horaInicio": "19:00",
+            "horaFim": "20:40"
+        },{
+            "id": null,
+            "dia": "Quinta-feira",
+            "horaInicio": "19:00",
+            "horaFim": "20:40"
+        }]
+    }
+]

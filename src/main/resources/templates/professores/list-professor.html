@@ -4,34 +4,32 @@
 <body>
     <div>
         <div th:insert="~{fragments/navbar.html :: navbar}"></div>
-        <div th:switch="${cursos}">
-            <h2 th:case="null">Sem cursos cadastrados</h2>
+        <div th:switch="${professores}">
+            <h2 th:case="null">Sem professores cadastrados</h2>
             <div th:case="*">
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Nome</th>
-                            <th>Descrição</th>
-                            <th>Quant. Semestres</th>
+                            <th>CPF</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="curso : ${cursos}">
-                            <td th:text="${curso.id}"></td>
-                            <td th:text="${curso.nome}"></td>
-                            <td th:text="${curso.descricao}"></td>
-                            <td th:text="${curso.quantSemestres}"></td>
+                        <tr th:each="professor : ${professores}">
+                            <td th:text="${professor.id}"></td>
+                            <td th:text="${professor.nome}"></td>
+                            <td th:text="${professor.cpf}"></td>
                             <td>
-                                <a th:href="@{/cursos/deletar/{id}(id=${curso.id})}" class="btn btn-danger">Excluir</a>
+                                <a th:href="@{/professores/deletar/{id}(id=${professor.id})}" class="btn btn-danger">Excluir</a>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             
-            <!-- <a th:href="@{/cursos/criar}" class="btn btn-success">Adicionar Novo Curso</a> -->
+            <!-- <a th:href="@{/professores/criar}" class="btn btn-success">Adicionar Novo Professor</a> -->
         </div>
     </div>
 </body>

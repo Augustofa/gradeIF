@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/navbar.html :: header}">
+<body>
+    <div>
+        <div th:insert="~{fragments/navbar.html :: navbar}"></div>
+        <div th:switch="${disciplinas}">
+            <h2 th:case="null">Sem disciplinas cadastradas</h2>
+            <div th:case="*">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Código</th>
+                            <th>Nome</th>
+                            <th>Sala</th>
+                            <th>Professor</th>
+                            <th>Vagas</th>
+                            <th>Créditos</th>
+                            <th>Pré-Requisitos</th>
+                            <th>Pós-Requisitos</th>
+                            <th>Horários</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="disciplina : ${disciplinas}">
+                            <td th:text="${disciplina.id}"></td>
+                            <td th:text="${disciplina.codigo}"></td>
+                            <td th:text="${disciplina.nome}"></td>
+                            <td th:text="${disciplina.sala}"></td>
+                            <td th:text="${disciplina.professor}"></td>
+                            <td th:text="${disciplina.vagas}"></td>
+                            <td th:text="${disciplina.creditos}"></td>
+                            <td th:text="${disciplina.preRequisitos}"></td>
+                            <td th:text="${disciplina.posRequisitos}"></td>
+                            <td th:text="${disciplina.horarios}"></td>
+                            <td>
+                                <a th:href="@{/disciplinas/deletar/{id}(id=${disciplina.id})}" class="btn btn-danger">Excluir</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- <a th:href="@{/disciplinas/criar}" class="btn btn-success">Adicionar Nova Disciplina</a> -->
+        </div>
+    </div>
+</body>
+</html>

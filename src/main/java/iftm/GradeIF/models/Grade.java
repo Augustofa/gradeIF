@@ -8,12 +8,14 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Professor {
+public abstract class Grade {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    // private String cpf;
+    private int quantCreditos;
 
-    private String nome;
+    public int calcCreditos() {
+        return quantCreditos;
+    }
 }

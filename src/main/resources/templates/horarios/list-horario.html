@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/navbar.html :: header}">
+<body>
+    <div>
+        <div th:insert="~{fragments/navbar.html :: navbar}"></div>
+        <div th:switch="${horarios}">
+            <h2 th:case="null">Sem horários cadastrados</h2>
+            <div th:case="*">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Dia</th>
+                            <th>Hora Início</th>
+                            <th>Hora Fim</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="horario : ${#lists.sort(horarios)}">
+                            <td th:text="${horario.id}"></td>
+                            <td th:text="${horario.dia}"></td>
+                            <td th:text="${horario.horaInicio}"></td>
+                            <td th:text="${horario.horaFim}"></td>
+                            <td>
+                                <a th:href="@{/horarios/deletar/{id}(id=${horario.id})}" class="btn btn-danger">Excluir</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- <a th:href="@{/horarios/criar}" class="btn btn-success">Adicionar Novo Horário</a> -->
+        </div>
+    </div>
+</body>
+</html>

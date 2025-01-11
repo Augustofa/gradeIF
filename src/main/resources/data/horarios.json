@@ -1,0 +1,32 @@
+[
+    {
+        "id": null,
+        "dia": "Segunda-feira",
+        "horaInicio": "19:00",
+        "horaFim": "20:40"
+    },
+    {
+        "id": null,
+        "dia": "Terça-feira",
+        "horaInicio": "20:50",
+        "horaFim": "22:30"
+    },
+    {
+        "id": null,
+        "dia": "Quarta-feira",
+        "horaInicio": "19:00",
+        "horaFim": "20:40"
+    },
+    {
+        "id": null,
+        "dia": "Quinta-feira",
+        "horaInicio": "20:50",
+        "horaFim": "22:30"
+    },
+    {
+        "id": null,
+        "dia": "Sexta-feira",
+        "horaInicio": "19:00",
+        "horaFim": "20:40"
+    }
+]
