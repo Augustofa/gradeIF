@@ -11,7 +11,7 @@
             <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="text-danger"></span>
         </div>
         <div>
-            <label for="cpf">CPF:</label>
+            <label for="cpf">cpf:</label>
             <input type="text" th:field="*{cpf}" id="cpf" placeholder="000.000.000-00">
             <span th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}" class="text-danger"></span>
         </div>

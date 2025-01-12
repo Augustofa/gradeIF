@@ -2,7 +2,9 @@ package iftm.GradeIF;
 
 import java.io.InputStream;
 import java.util.List;
+import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,6 +27,12 @@ import iftm.GradeIF.repositories.CursoRepository;
 import iftm.GradeIF.repositories.DisciplinaRepository;
 import iftm.GradeIF.repositories.HorarioRepository;
 import iftm.GradeIF.repositories.ProfessorRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.metamodel.EntityType;
+import jakarta.persistence.metamodel.Metamodel;
+import jakarta.persistence.metamodel.SingularAttribute;
+import jakarta.transaction.Transactional;
 
 @EnableJpaRepositories
 @ComponentScan("iftm.GradeIF.controllers")
@@ -43,24 +51,43 @@ public class GradeIfApplication implements CommandLineRunner {
 	private final DisciplinaRepository repositoryDisciplinas;
 
     private final ObjectMapper objectMapper;
+	private final EntityManager entityManager;
 
-    public GradeIfApplication(AlunoRepository repositoryAlunos, ObjectMapper objectMapper, CursoRepository repositoryCursos, ProfessorRepository repositoryProfessores, HorarioRepository repositoryHorarios, DisciplinaRepository repositoryDisciplinas) {
+	@Autowired
+	private final EntityManagerFactory entityManagerFactory;
+
+    public GradeIfApplication(AlunoRepository repositoryAlunos, ObjectMapper objectMapper, CursoRepository repositoryCursos, ProfessorRepository repositoryProfessores, HorarioRepository repositoryHorarios, DisciplinaRepository repositoryDisciplinas, EntityManager entityManager, EntityManagerFactory entityManagerFactory) {
         this.repositoryAlunos = repositoryAlunos;
 		this.repositoryCursos = repositoryCursos;
 		this.repositoryProfessores = repositoryProfessores;
 		this.repositoryHorarios = repositoryHorarios;
 		this.repositoryDisciplinas = repositoryDisciplinas;
         this.objectMapper = objectMapper;
+		this.entityManager = entityManager;
+		this.entityManagerFactory = entityManagerFactory;
     }
 
     @Override
+	@Transactional
     public void run(String... args) throws Exception {
         System.out.println("Carregando dados...");
+
+		// Metamodel metamodel = entityManager.getMetamodel();
+		// EntityType<Aluno> alunoEntityType = metamodel.entity(Aluno.class);
+		// Set<SingularAttribute<? super Aluno, ?>> attributes = alunoEntityType.getSingularAttributes();
+
+		// System.out.println("Attributes of Aluno:");
+		// for (SingularAttribute<? super Aluno, ?> attribute : attributes) {
+		// 	System.out.println(attribute.getName());
+		// }
+		
+		// repositoryCursos.deleteAll();
 		if(repositoryCursos.count() == 0) {
 			try (InputStream inputStream = TypeReference.class.getResourceAsStream("/data/cursos.json")) {
 				repositoryCursos.saveAll(objectMapper.readValue(inputStream, new TypeReference<List<Curso>>(){}));
 			}
 		}
+		// repositoryAlunos.deleteAll();
 		if(repositoryAlunos.count() == 0) {
 			try (InputStream inputStream = TypeReference.class.getResourceAsStream("/data/alunos.json")) {
 				// repositoryAlunos.saveAll(objectMapper.readValue(inputStream,new TypeReference<List<Aluno>>(){}));
@@ -68,24 +95,23 @@ public class GradeIfApplication implements CommandLineRunner {
 				alunoController.saveAllAlunos(objectMapper.readValue(inputStream, new TypeReference<List<Aluno>>(){}));
 			}
 		}
-		if(repositoryCursos.count() == 0) {
-			try (InputStream inputStream = TypeReference.class.getResourceAsStream("/data/cursos.json")) {
-				repositoryCursos.saveAll(objectMapper.readValue(inputStream, new TypeReference<List<Curso>>(){}));
-			}
-		}
+		// repositoryProfessores.deleteAll();
 		if(repositoryProfessores.count() == 0) {
 			try (InputStream inputStream = TypeReference.class.getResourceAsStream("/data/professores.json")) {
-				repositoryProfessores.saveAll(objectMapper.readValue(inputStream, new TypeReference<List<Professor>>(){}));
+				repositoryProfessores.saveAllAndFlush(objectMapper.readValue(inputStream, new TypeReference<List<Professor>>(){}));
 			}
 		}
+		// repositoryHorarios.deleteAll();
 		if(repositoryHorarios.count() == 0) {
 			try (InputStream inputStream = TypeReference.class.getResourceAsStream("/data/horarios.json")) {
-				repositoryHorarios.saveAll(objectMapper.readValue(inputStream, new TypeReference<List<Horario>>(){}));
+				repositoryHorarios.saveAllAndFlush(objectMapper.readValue(inputStream, new TypeReference<List<Horario>>(){}));
 			}
 		}
+		
+		// repositoryDisciplinas.deleteAll();
 		if(repositoryDisciplinas.count() == 0) {
 			try (InputStream inputStream = TypeReference.class.getResourceAsStream("/data/disciplinas.json")) {
-				DisciplinaController disciplinaController = new DisciplinaController(repositoryDisciplinas, repositoryProfessores, repositoryHorarios);
+				DisciplinaController disciplinaController = new DisciplinaController(repositoryDisciplinas, repositoryProfessores, repositoryHorarios, entityManager);
 				disciplinaController.saveAllDisciplinas(objectMapper.readValue(inputStream, new TypeReference<List<Disciplina>>(){}));
 			}
 		}

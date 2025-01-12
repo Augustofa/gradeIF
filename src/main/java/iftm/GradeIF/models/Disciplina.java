@@ -2,7 +2,7 @@ package iftm.GradeIF.models;
 
 import java.util.List;
 
-import jakarta.persistence.ElementCollection;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -26,25 +26,21 @@ public class Disciplina {
     
     private String sala;
     
-    // @ManyToOne
-    // @JoinColumn(name = "professor_id", nullable = false)
-    // private Professor professor;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "professor_id", referencedColumnName = "id")
+    private Professor professor;
+    private String nomeProfessor;
     
     private int vagas;
 
     private int creditos;
     
-    @ElementCollection
     @ManyToMany(fetch = FetchType.LAZY)
     // @Convert(converter = DisciplinaConverter.class)
     private List<Disciplina> preRequisitos;
-    private List<String> strPreRequisitos;
+    private List<String> preRequisitosNomes;
     
-    @ManyToMany(fetch = FetchType.LAZY)
-    // @Convert(converter = DisciplinaConverter.class)
-    private List<Disciplina> posRequisitos;
-    private List<String> strPosRequisitos;
-    
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<Horario> horarios;
+    private List<String> horariosNomes;
 }

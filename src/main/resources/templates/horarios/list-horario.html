@@ -14,6 +14,7 @@
                             <th>Dia</th>
                             <th>Hora Início</th>
                             <th>Hora Fim</th>
+                            <th>Combina Dia Hora</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -23,6 +24,7 @@
                             <td th:text="${horario.dia}"></td>
                             <td th:text="${horario.horaInicio}"></td>
                             <td th:text="${horario.horaFim}"></td>
+                            <td th:text="${horario.combinaDiaHora}"></td>
                             <td>
                                 <a th:href="@{/horarios/deletar/{id}(id=${horario.id})}" class="btn btn-danger">Excluir</a>
                             </td>

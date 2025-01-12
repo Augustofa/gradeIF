@@ -17,11 +17,11 @@ public class Aluno {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @NotBlank(message = "CPF é obrigatório")
-    private String cpf;
-
     @NotBlank(message = "Nome é obrigatório")
     private String nome;
+
+    @NotBlank(message = "CPF é obrigatório")
+    private String cpf;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "curso_id", referencedColumnName = "id")

@@ -1,32 +1,62 @@
 [
     {
         "id": null,
-        "dia": "Segunda-feira",
+        "dia": "Segunda",
         "horaInicio": "19:00",
         "horaFim": "20:40"
     },
     {
         "id": null,
-        "dia": "Terça-feira",
+        "dia": "Segunda",
         "horaInicio": "20:50",
         "horaFim": "22:30"
     },
     {
         "id": null,
-        "dia": "Quarta-feira",
+        "dia": "Terça",
         "horaInicio": "19:00",
         "horaFim": "20:40"
     },
     {
         "id": null,
-        "dia": "Quinta-feira",
+        "dia": "Terça",
         "horaInicio": "20:50",
         "horaFim": "22:30"
     },
     {
         "id": null,
-        "dia": "Sexta-feira",
+        "dia": "Quarta",
         "horaInicio": "19:00",
         "horaFim": "20:40"
+    },
+    {
+        "id": null,
+        "dia": "Quarta",
+        "horaInicio": "20:50",
+        "horaFim": "22:30"
+    },
+    {
+        "id": null,
+        "dia": "Quinta",
+        "horaInicio": "19:00",
+        "horaFim": "20:40"
+    },
+    {
+        "id": null,
+        "dia": "Quinta",
+        "horaInicio": "20:50",
+        "horaFim": "22:30"
+    },
+    {
+        "id": null,
+        "dia": "Sexta",
+        "horaInicio": "19:00",
+        "horaFim": "20:40"
+    },
+    {
+        "id": null,
+        "dia": "Sexta",
+        "horaInicio": "20:50",
+        "horaFim": "22:30"
     }
 ]

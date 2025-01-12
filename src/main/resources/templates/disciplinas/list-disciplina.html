@@ -18,7 +18,6 @@
                             <th>Vagas</th>
                             <th>Créditos</th>
                             <th>Pré-Requisitos</th>
-                            <th>Pós-Requisitos</th>
                             <th>Horários</th>
                             <th>Ações</th>
                         </tr>
@@ -29,12 +28,16 @@
                             <td th:text="${disciplina.codigo}"></td>
                             <td th:text="${disciplina.nome}"></td>
                             <td th:text="${disciplina.sala}"></td>
-                            <td th:text="${disciplina.professor}"></td>
+                            <td th:text="${disciplina.professor.nome}"></td>
                             <td th:text="${disciplina.vagas}"></td>
                             <td th:text="${disciplina.creditos}"></td>
-                            <td th:text="${disciplina.preRequisitos}"></td>
-                            <td th:text="${disciplina.posRequisitos}"></td>
-                            <td th:text="${disciplina.horarios}"></td>
+                            <td th:if="${disciplina.preRequisitosNomes != null and !disciplina.preRequisitosNomes.isEmpty()}" th:text="${disciplina.preRequisitosNomes}"></td>
+                            <td th:if="${disciplina.preRequisitosNomes == null or disciplina.preRequisitosNomes.isEmpty()}">Sem pré-requisitos</td>
+                            <td>
+                                <ul>
+                                    <li th:each="horario : ${disciplina.horarios}" th:text="${horario.combinaDiaHora}"></li>
+                                </ul>
+                            </td>
                             <td>
                                 <a th:href="@{/disciplinas/deletar/{id}(id=${disciplina.id})}" class="btn btn-danger">Excluir</a>
                             </td>
@@ -43,7 +46,7 @@
                 </table>
             </div>
             
-            <!-- <a th:href="@{/disciplinas/criar}" class="btn btn-success">Adicionar Nova Disciplina</a> -->
+            <a th:href="@{/disciplinas/criar}" class="btn btn-success">Adicionar Nova Disciplina</a>
         </div>
     </div>
 </body>

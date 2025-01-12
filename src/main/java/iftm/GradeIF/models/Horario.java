@@ -1,8 +1,9 @@
 package iftm.GradeIF.models;
 
-import java.beans.Transient;
 import java.time.LocalTime;
+import java.util.Map;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,14 +25,29 @@ public class Horario implements Comparable<Horario> {
 
     private String combinaDiaHora;
 
-   
+    
+    @PostConstruct
     public String getCombinaDiaHora() {
         this.combinaDiaHora = (this.dia + " - " + this.horaInicio.toString() + "-" + this.horaFim.toString());
         return combinaDiaHora;
     }
+    
+    private static final Map<String, Integer> DIAS_DA_SEMANA = Map.of(
+        "Segunda", 1,
+        "Terça", 2,
+        "Quarta", 3,
+        "Quinta", 4,
+        "Sexta", 5,
+        "Sábado", 6,
+        "Domingo", 7
+    );
 
     @Override
     public int compareTo(Horario o) {
-        return this.getCombinaDiaHora().compareTo(o.getCombinaDiaHora());
+        int diaComparison = Integer.compare(DIAS_DA_SEMANA.get(this.dia), DIAS_DA_SEMANA.get(o.dia));
+        if (diaComparison != 0) {
+            return diaComparison;
+        }
+        return this.horaInicio.compareTo(o.horaInicio);
     }
 }
