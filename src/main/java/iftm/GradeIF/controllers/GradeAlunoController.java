@@ -1,7 +1,7 @@
 package iftm.GradeIF.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import iftm.GradeIF.models.Aluno;
 import iftm.GradeIF.models.Disciplina;
+import iftm.GradeIF.models.DisciplinaHorario;
 import iftm.GradeIF.models.GradeAluno;
-import iftm.GradeIF.models.GradeForm;
+import iftm.GradeIF.models.Horario;
 import iftm.GradeIF.repositories.AlunoRepository;
 import iftm.GradeIF.repositories.DisciplinaRepository;
 import iftm.GradeIF.repositories.GradeAlunoRepository;
@@ -31,13 +32,10 @@ public class GradeAlunoController {
     private final AlunoRepository alunoRepository;
     private final DisciplinaRepository disciplinaRepository;
     private final EntityManager entityManager;
-    private final GradeFormRepository gradeFormRepository;
-
     public GradeAlunoController(GradeAlunoRepository gradeAlunoRepository, AlunoRepository alunoRepository, DisciplinaRepository disciplinaRepository, GradeFormRepository gradeFormRepository, EntityManager entityManager) {
         this.gradeAlunoRepository = gradeAlunoRepository;
         this.alunoRepository = alunoRepository;
         this.disciplinaRepository = disciplinaRepository;
-        this.gradeFormRepository = gradeFormRepository;
         this.entityManager = entityManager;
     }
 
@@ -82,11 +80,26 @@ public class GradeAlunoController {
     @GetMapping("/editar/{id}")
         public String formularioEditarGradeAluno(@PathVariable("id") int id, Model model) {
         GradeAluno gradeAluno = gradeAlunoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("ID inválido: " + id));
+        List<DisciplinaHorario> discHorarios = new ArrayList<>();
+        List<Disciplina> discRestantes = disciplinaRepository.findAll();
+        
+        for (Disciplina tempDisc : gradeAluno.getDisciplinas()) {
+            DisciplinaHorario discHorario = new DisciplinaHorario();
+            List<Horario> horarios = new ArrayList<>();
+            for(Horario tempHorario : tempDisc.getHorarios()){
+                horarios.add(tempHorario);
+            }
+            discHorario.setHorarios(horarios);
+            discHorario.setCodigo(tempDisc.getCodigo());
+            discHorarios.add(discHorario);
 
-        model.addAttribute("listaDisciplinas", gradeAluno.getDisciplinas());
+            discRestantes.remove(tempDisc);
+        }
+
+        model.addAttribute("discHorarios", discHorarios);
         model.addAttribute("gradeAluno", gradeAluno);
         model.addAttribute("aluno", gradeAluno.getAluno());
-        model.addAttribute("disciplinas", disciplinaRepository.findAll());
+        model.addAttribute("disciplinas", discRestantes);
         return "grades-alunos/edit-grade";
         }
 
@@ -96,12 +109,12 @@ public class GradeAlunoController {
             System.out.println(result.getAllErrors());
             return "grades-alunos/edit-grade";
         }
-
-        System.out.println(gradeAluno.toString());
         
         GradeAluno gradeExistente = gradeAlunoRepository.findById(id).get();
 
         Disciplina disciplina = disciplinaRepository.findById(gradeAluno.getIdDiscSelecionada()).get();
+
+        List<Disciplina> discRestantes = disciplinaRepository.findAll();
 
         List<Disciplina> listDisciplinas = gradeExistente.getDisciplinas();
         Boolean repetida = false;
@@ -111,22 +124,83 @@ public class GradeAlunoController {
             }
         }
         if(!repetida){
+            disciplina.subtraiVaga();
             listDisciplinas.add(disciplina);
         }
         gradeExistente.setDisciplinas(listDisciplinas);
         
         gradeAlunoRepository.saveAndFlush(gradeExistente);
 
-        model.addAttribute("listaDisciplinas", gradeExistente.getDisciplinas());
+        List<DisciplinaHorario> discHorarios = new ArrayList<>();
+        for (Disciplina tempDisc : gradeExistente.getDisciplinas()) {
+            DisciplinaHorario discHorario = new DisciplinaHorario();
+            List<Horario> horarios = new ArrayList<>();
+            for(Horario tempHorario : tempDisc.getHorarios()){
+                horarios.add(tempHorario);
+            }
+            discHorario.setHorarios(horarios);
+            discHorario.setCodigo(tempDisc.getCodigo());
+            discHorarios.add(discHorario);
+
+            discRestantes.remove(tempDisc);
+        }
+
+        model.addAttribute("discHorarios", discHorarios);
         model.addAttribute("gradeAluno", gradeExistente);
         model.addAttribute("aluno", gradeExistente.getAluno());
-        model.addAttribute("disciplinas", disciplinaRepository.findAll());
+        model.addAttribute("disciplinas", discRestantes);
 
         return "grades-alunos/edit-grade";
     }
 
-        @GetMapping("/deletar/{id}")
-        public String deletarGradeAluno(@PathVariable("id") int id, Model model) {
+    @PostMapping("/editar/{idGrade}/remove/{idDisciplina}")
+    public String formularioRemoverDisciplinaGrade(@PathVariable("idGrade") int idGrade, @PathVariable("idDisciplina") int idDisciplina, @ModelAttribute GradeAluno gradeAluno, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            System.out.println(result.getAllErrors());
+            return "grades-alunos/edit-grade";
+        }
+        
+        GradeAluno gradeExistente = gradeAlunoRepository.findById(idGrade).get();
+
+        Disciplina discRemovida = disciplinaRepository.findById(idDisciplina).get();
+
+        List<Disciplina> discRestantes = disciplinaRepository.findAll();
+
+        List<Disciplina> listDisciplinas = gradeExistente.getDisciplinas();
+
+        listDisciplinas.remove(discRemovida);
+        discRemovida.revogaVaga();
+        
+        gradeExistente.setDisciplinas(listDisciplinas);
+        
+        gradeAlunoRepository.saveAndFlush(gradeExistente);
+
+        List<DisciplinaHorario> discHorarios = new ArrayList<>();
+        for (Disciplina tempDisc : gradeExistente.getDisciplinas()) {
+            DisciplinaHorario discHorario = new DisciplinaHorario();
+            List<Horario> horarios = new ArrayList<>();
+            for(Horario tempHorario : tempDisc.getHorarios()){
+                horarios.add(tempHorario);
+            }
+            discHorario.setHorarios(horarios);
+            discHorario.setCodigo(tempDisc.getCodigo());
+            discHorarios.add(discHorario);
+
+            discRestantes.remove(tempDisc);
+        }
+
+        System.out.println("Horarios: " + discHorarios.toString());
+
+        model.addAttribute("discHorarios", discHorarios);
+        model.addAttribute("gradeAluno", gradeExistente);
+        model.addAttribute("aluno", gradeExistente.getAluno());
+        model.addAttribute("disciplinas", discRestantes);
+
+        return "grades-alunos/edit-grade";
+    }
+
+    @GetMapping("/deletar/{id}")
+    public String deletarGradeAluno(@PathVariable("id") int id, Model model) {
         GradeAluno gradeAluno = gradeAlunoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("ID inválido: " + id));
         gradeAlunoRepository.delete(gradeAluno);
         return "redirect:/grades-alunos";

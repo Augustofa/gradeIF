@@ -121,12 +121,12 @@ public class GradeIfApplication implements CommandLineRunner {
 			}
 		}
 		// repositoryGradePeriodo.deleteAll();
-		if(repositoryGradePeriodo.count() == 0) {
-			try (InputStream inputStream = TypeReference.class.getResourceAsStream("/data/gradePeriodos.json")) {
-				GradePeriodoController gradePeriodoController = new GradePeriodoController(repositoryGradePeriodo, repositoryCursos, repositoryDisciplinas, entityManager);
-				gradePeriodoController.saveAllGradePeriodos(objectMapper.readValue(inputStream, new TypeReference<List<GradePeriodo>>(){}));
-			}
-		}
+		// if(repositoryGradePeriodo.count() == 0) {
+		// 	try (InputStream inputStream = TypeReference.class.getResourceAsStream("/data/gradePeriodos.json")) {
+		// 		GradePeriodoController gradePeriodoController = new GradePeriodoController(repositoryGradePeriodo, repositoryCursos, repositoryDisciplinas, entityManager);
+		// 		gradePeriodoController.saveAllGradePeriodos(objectMapper.readValue(inputStream, new TypeReference<List<GradePeriodo>>(){}));
+		// 	}
+		// }
 
 		// repositoryGradeAlunos.deleteAll();
     }

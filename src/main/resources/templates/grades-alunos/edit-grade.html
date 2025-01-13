@@ -5,7 +5,7 @@
     <script th:src="@{/js/montagem-grade.js}"></script>
     <div th:insert="~{fragments/navbar.html :: navbar}"></div>
     <h1>Editar Grade de Aluno</h1>
-    <form class="col-lg-6" th:action="@{/grades-alunos/salvar}" th:object="${gradeAluno}" method="post">
+    <form class="col-lg-12" th:action="@{/grades-alunos/salvar}" th:object="${gradeAluno}" method="post">
         <div class="form-inline">
             <label for="nomeAluno" style="padding-right: 1vh;">Aluno:</label>
             <input type="text" th:field="*{nomeAluno}" id="nomeAluno" class="form-control" readonly>
@@ -16,12 +16,12 @@
                 <option value="">Selecione a Disciplina</option>
                 <option th:each="disciplina : ${disciplinas}" th:value="${disciplina.id}" th:text="${disciplina.nome}" th:name="idDiscSelecionada"></option>
             </select>
-            <input type="submit" th:formaction="'/grades-alunos/editar/' + ${gradeAluno.id} + '/add'" value="Adicionar Disciplina">
+            <input type="submit" th:formaction="'/grades-alunos/editar/' + ${gradeAluno.id} + '/add'" value="Adicionar Disciplina" class="btnConfirmar">
         </div>
         <div>
             <label for="horarios">Selecione os horários:</label>
             <input type="hidden" id="horarios">
-            <table class="table table-bordered">
+            <table class="table table-bordered" style="width: 80%">
                 <thead>
                     <tr>
                         <th></th>
@@ -35,39 +35,120 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>19:00</td>
-                        <td class="selectable" data-day="Segunda" data-time="19:00"></td>
-                        <td class="selectable" data-day="Terça" data-time="19:00"></td>
-                        <td class="selectable" data-day="Quarta" data-time="19:00"></td>
-                        <td class="selectable" data-day="Quinta" data-time="19:00"></td>
-                        <td class="selectable" data-day="Sexta" data-time="19:00"></td>
-                        <td class="selectable" data-day="Sábado" data-time="19:00"></td>
+                        <td>19:00 - 20:40</td>
+                        <td data-day="Segunda" data-time="19:00-20:40" id="Segunda - 19:00-20:40"></td>
+                        <td data-day="Terça" data-time="19:00-20:40" id="Terça - 19:00-20:40"></td>
+                        <td data-day="Quarta" data-time="19:00-20:40" id="Quarta - 19:00-20:40"></td>
+                        <td data-day="Quinta" data-time="19:00-20:40" id="Quinta - 19:00-20:40"></td>
+                        <td data-day="Sexta" data-time="19:00-20:40" id="Sexta - 19:00-20:40"></td>
+                        <td data-day="Sábado" data-time="19:00-20:40" id="Sábado - 19:00-20:40"></td>
                     </tr>
                     <tr>
-                        <td>20:50</td>
-                        <td class="selectable" data-day="Segunda" data-time="20:50"></td>
-                        <td class="selectable" data-day="Terça" data-time="20:50"></td>
-                        <td class="selectable" data-day="Quarta" data-time="20:50"></td>
-                        <td class="selectable" data-day="Quinta" data-time="20:50"></td>
-                        <td class="selectable" data-day="Sexta" data-time="20:50"></td>
-                        <td class="selectable" data-day="Sábado" data-time="20:50"></td>
+                        <td>20:50 - 22:30</td>
+                        <td data-day="Segunda" data-time="20:50-22:30" id="Segunda - 20:50-22:30"></td>
+                        <td data-day="Terça" data-time="20:50-22:30" id="Terça - 20:50-22:30"></td>
+                        <td data-day="Quarta" data-time="20:50-22:30" id="Quarta - 20:50-22:30"></td>
+                        <td data-day="Quinta" data-time="20:50-22:30" id="Quinta - 20:50-22:30"></td>
+                        <td data-day="Sexta" data-time="20:50-22:30" id="Sexta - 20:50-22:30"></td>
+                        <td data-day="Sábado" data-time="20:50-22:30" id="Sábado - 20:50-22:30"></td>
                     </tr>
                 </tbody>
             </table>
-            <!-- <span th:if="${#fields.hasErrors('horarios')}" th:errors="*{horarios}" class="text-danger"></span> -->
-        </div> 
+            <div class="alert alert-danger d-none" role="alert" id="erro-grade">Erro de compatibilidade na grade!</div>
+        </div>
         <div>
-            <button type="submit">Confirmar Grade</button>
+            <button type="submit" class="btnConfirmar">Confirmar Grade</button>
+        </div>
+
+
+        <br><br>
+        <div class="w-75">
+            <h2>Disciplinas adicionadas:</h2>
+            <div th:switch="${gradeAluno.disciplinas}">
+                <h2 th:case="null">Sem disciplinas cadastradas</h2>
+                <div th:case="*">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nome</th>
+                                <th>Sala</th>
+                                <th>Professor</th>
+                                <th>Vagas</th>
+                                <th>Créditos</th>
+                                <th>Pré-Requisitos</th>
+                                <th>Horários</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="disciplina : ${gradeAluno.disciplinas}" th:id="${disciplina.codigo}">
+                                <td th:text="${disciplina.codigo}"></td>
+                                <td th:text="${disciplina.nome}"></td>
+                                <td th:text="${disciplina.sala}"></td>
+                                <td th:text="${disciplina.professor.nome}"></td>
+                                <td th:text="${disciplina.vagas}"></td>
+                                <td th:text="${disciplina.creditos}"></td>
+                                <td th:if="${disciplina.preRequisitosNomes != null and !disciplina.preRequisitosNomes.isEmpty()}" th:text="${disciplina.preRequisitosNomes}"></td>
+                                <td th:if="${disciplina.preRequisitosNomes == null or disciplina.preRequisitosNomes.isEmpty()}">Sem pré-requisitos</td>
+                                <td>
+                                    <ul>
+                                        <li th:each="horario : ${disciplina.horarios}" th:text="${horario.combinaDiaHora}"></li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <input type="submit" th:formaction="'/grades-alunos/editar/' + ${gradeAluno.id} + '/remove/' + ${disciplina.id}" value="Remover" class="btn btn-danger">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </form>
+
 
     <script th:inline="javascript">
         document.addEventListener("DOMContentLoaded", function() {
             console.log("Page loaded");
 
-            // var list = /*[[${listaDisciplinas}]]*/ [];
-            // console.log(list);
-            // Your onload function code here
+            var horarios = /*[[${discHorarios}]]*/ [];
+            horarios.forEach(disciplina => {
+                let codigo = `${disciplina.codigo}`
+                let cellList = [];
+                let valido = true;
+                for(let i = 0; i < `${disciplina.horarios.length}`; i++){
+                    let cell = document.getElementById(`${disciplina.horarios[i].combinaDiaHora}`);
+                    cellList.push(cell);
+                    if(cell.textContent != ""){
+                        valido = false;
+                    }
+                }
+                if(valido){
+                    cellList.forEach(cell => {
+                        cell.textContent = codigo;
+                    })
+                }else{
+                    document.getElementById(codigo).style.backgroundColor = "rgb(255, 200, 200)";
+
+                    cellList.forEach(cell => {
+                        if(cell.textContent != ""){
+                            let tempCodigo = cell.textContent.split('-').forEach(cellConflito => {
+                                document.getElementById(cellConflito).style.backgroundColor = "rgb(255, 200, 200)";
+                            });
+                            cell.textContent += "-" + codigo;
+                            cell.style.backgroundColor = "rgb(255, 200, 200)";
+                        }
+                    })
+                    const errorMessage = document.getElementById('erro-grade');
+                    errorMessage.classList.remove('d-none');
+                    let botoes = document.querySelectorAll('.btnConfirmar');
+                    botoes.forEach(botao => {
+                        botao.disabled = true;
+                    });
+                }
+
+            })
         });
     </script>
 </body>

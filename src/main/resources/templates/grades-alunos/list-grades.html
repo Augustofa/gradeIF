@@ -19,14 +19,18 @@
             </thead>
             <tbody>
                 <tr th:each="gradeAluno : ${gradesAlunos}">
-                <td th:text="${gradeAluno.id}"></td>
-                <td th:text="${gradeAluno.aluno.nome}"></td>
-                <td th:text="${gradeAluno.periodo}"></td>
-                <td th:text="${gradeAluno.disciplinas}"></td>
-                <td>
-                    <a th:href="@{/grades-alunos/editar/{id}(id=${gradeAluno.id})}" class="btn btn-primary">Editar</a>
-                    <a th:href="@{/grades-alunos/deletar/{id}(id=${gradeAluno.id})}" class="btn btn-danger">Excluir</a>
-                </td>
+                    <td th:text="${gradeAluno.id}"></td>
+                    <td th:text="${gradeAluno.aluno.nome}"></td>
+                    <td th:text="${gradeAluno.periodo}"></td>
+                    <td>
+                        <ul>
+                            <li th:each="disciplina : ${gradeAluno.disciplinas}" th:text="${disciplina.codigo}"></li>
+                        </ul>
+                    </td>
+                    <td>
+                        <a th:href="@{/grades-alunos/editar/{id}(id=${gradeAluno.id})}" class="btn btn-primary">Editar</a>
+                        <a th:href="@{/grades-alunos/deletar/{id}(id=${gradeAluno.id})}" class="btn btn-danger">Excluir</a>
+                    </td>
                 </tr>
             </tbody>
             </table>

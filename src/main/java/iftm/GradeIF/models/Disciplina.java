@@ -43,4 +43,16 @@ public class Disciplina {
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<Horario> horarios;
     private List<String> horariosNomes;
+
+    public Boolean subtraiVaga(){
+        if(this.vagas > 0){
+            vagas--;
+            return true;
+        }
+        return false;
+    }
+
+    public void revogaVaga(){
+        this.vagas++;
+    }
 }
