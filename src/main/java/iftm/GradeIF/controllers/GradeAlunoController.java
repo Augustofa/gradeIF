@@ -1,6 +1,7 @@
 package iftm.GradeIF.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -82,11 +83,7 @@ public class GradeAlunoController {
         public String formularioEditarGradeAluno(@PathVariable("id") int id, Model model) {
         GradeAluno gradeAluno = gradeAlunoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("ID inválido: " + id));
 
-        gradeFormRepository.findById(gradeAluno.getId());
-        GradeForm gradeForm = new GradeForm();
-        gradeForm.setNomeAluno(gradeAluno.getAluno().getNome());
-
-        model.addAttribute("gradeForm", gradeForm);
+        model.addAttribute("listaDisciplinas", gradeAluno.getDisciplinas());
         model.addAttribute("gradeAluno", gradeAluno);
         model.addAttribute("aluno", gradeAluno.getAluno());
         model.addAttribute("disciplinas", disciplinaRepository.findAll());
@@ -94,23 +91,35 @@ public class GradeAlunoController {
         }
 
     @PostMapping("/editar/{id}/add")
-    public String formularioAdicionarDisciplinaGrade(@PathVariable("id") int id, @ModelAttribute GradeForm gradeForm, BindingResult result, Model model) {
+    public String formularioAdicionarDisciplinaGrade(@PathVariable("id") int id, @ModelAttribute GradeAluno gradeAluno, BindingResult result, Model model) {
         if (result.hasErrors()) {
             System.out.println(result.getAllErrors());
             return "grades-alunos/edit-grade";
         }
 
-        GradeAluno gradeAluno = gradeAlunoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("ID inválido: " + id));
-        Disciplina disciplina = disciplinaRepository.findById(Integer.parseInt(gradeForm.getIdDisciplina())).orElseThrow(() -> new IllegalArgumentException("ID de disciplina inválido: " + gradeForm.getIdDisciplina()));
+        System.out.println(gradeAluno.toString());
         
-        gradeForm.getDisciplinas().add(disciplina);
-        System.out.println("Form: " + gradeForm.getDisciplinas());
-        gradeAlunoRepository.save(gradeAluno);
+        GradeAluno gradeExistente = gradeAlunoRepository.findById(id).get();
 
+        Disciplina disciplina = disciplinaRepository.findById(gradeAluno.getIdDiscSelecionada()).get();
 
-        model.addAttribute("gradeForm", gradeForm);
-        model.addAttribute("gradeAluno", gradeAluno);
-        model.addAttribute("aluno", gradeAluno.getAluno());
+        List<Disciplina> listDisciplinas = gradeExistente.getDisciplinas();
+        Boolean repetida = false;
+        for (Disciplina tempDisc : listDisciplinas) {
+            if(tempDisc.getId() == disciplina.getId()){
+                repetida = true;
+            }
+        }
+        if(!repetida){
+            listDisciplinas.add(disciplina);
+        }
+        gradeExistente.setDisciplinas(listDisciplinas);
+        
+        gradeAlunoRepository.saveAndFlush(gradeExistente);
+
+        model.addAttribute("listaDisciplinas", gradeExistente.getDisciplinas());
+        model.addAttribute("gradeAluno", gradeExistente);
+        model.addAttribute("aluno", gradeExistente.getAluno());
         model.addAttribute("disciplinas", disciplinaRepository.findAll());
 
         return "grades-alunos/edit-grade";

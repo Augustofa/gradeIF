@@ -27,6 +27,6 @@ public class Curso {
 
     private String descricao;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "curso")
-    private List<GradePeriodo> gradesPeriodos;
+    // @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, orphanRemoval = true, mappedBy = "curso")
+    // private List<GradePeriodo> gradesPeriodos;
 }

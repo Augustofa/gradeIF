@@ -5,17 +5,16 @@
     <script th:src="@{/js/montagem-grade.js}"></script>
     <div th:insert="~{fragments/navbar.html :: navbar}"></div>
     <h1>Editar Grade de Aluno</h1>
-    <form class="col-lg-6" th:action="@{/grades-alunos/salvar}" th:object="${gradeForm}" method="post">
+    <form class="col-lg-6" th:action="@{/grades-alunos/salvar}" th:object="${gradeAluno}" method="post">
         <div class="form-inline">
             <label for="nomeAluno" style="padding-right: 1vh;">Aluno:</label>
             <input type="text" th:field="*{nomeAluno}" id="nomeAluno" class="form-control" readonly>
         </div><br>
-        <input type="hidden" id="idGrade" th:value="${gradeAluno.id}" th:name="idGrade">
         <div>
-            <label for="idDisciplina">Disciplina:</label>
-            <select id="idDisciplina" name="disciplina" th:field="*{idDisciplina}">
+            <label for="idDiscSelecionada">Disciplina:</label>
+            <select id="idDiscSelecionada" name="disciplina" th:field="*{idDiscSelecionada}">
                 <option value="">Selecione a Disciplina</option>
-                <option th:each="disciplina : ${disciplinas}" th:value="${disciplina.id}" th:text="${disciplina.nome}" th:name="idDisciplina"></option>
+                <option th:each="disciplina : ${disciplinas}" th:value="${disciplina.id}" th:text="${disciplina.nome}" th:name="idDiscSelecionada"></option>
             </select>
             <input type="submit" th:formaction="'/grades-alunos/editar/' + ${gradeAluno.id} + '/add'" value="Adicionar Disciplina">
         </div>
@@ -61,5 +60,15 @@
             <button type="submit">Confirmar Grade</button>
         </div>
     </form>
+
+    <script th:inline="javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log("Page loaded");
+
+            // var list = /*[[${listaDisciplinas}]]*/ [];
+            // console.log(list);
+            // Your onload function code here
+        });
+    </script>
 </body>
 </html>

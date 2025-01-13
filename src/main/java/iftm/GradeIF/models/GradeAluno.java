@@ -1,10 +1,12 @@
 package iftm.GradeIF.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,11 +23,13 @@ public class GradeAluno extends Grade {
 
     private String periodo;
 
+    @ManyToMany
+    private List<Disciplina> disciplinas;
     private Integer idDiscSelecionada;
-    private List<Integer> idDisciplinas;
 
     public GradeAluno() {
         this.setTipo(0);
+        disciplinas = new ArrayList<>();
     }
 
     public int calcCreditos(){
