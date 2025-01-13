@@ -1,9 +1,9 @@
 package iftm.GradeIF.models;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Entity;
 import lombok.Data;
 
 @Entity
@@ -15,7 +15,7 @@ public abstract class Grade {
 
     private int quantCreditos;
 
-    public int calcCreditos() {
-        return quantCreditos;
-    }
+    private int tipo;
+
+    public abstract int calcCreditos();
 }

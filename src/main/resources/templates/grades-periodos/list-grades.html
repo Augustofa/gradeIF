@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/navbar.html :: header}">
+<body>
+    <div th:insert="~{fragments/navbar.html :: navbar}"></div>
+    <div th:switch="${gradePeriodos}">
+        <h2 th:case="null">Sem grades cadastradas</h2>
+        <div th:case="*">
+            <table class="table table-striped">
+            <thead>
+                <tr>
+                <th>ID</th>
+                <th>Curso</th>
+                <th>Período</th>
+                <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="gradePeriodo : ${gradePeriodos}">
+                <td th:text="${gradePeriodo.id}"></td>
+                <td th:text="${gradePeriodo.curso.nome}"></td>
+                <td th:text="${gradePeriodo.periodo}"></td>
+                <td>
+                    <a th:href="@{/gradePeriodos/editar/{id}(id=${gradePeriodo.id})}" class="btn btn-primary">Editar</a>
+                    <a th:href="@{/gradePeriodos/deletar/{id}(id=${gradePeriodo.id})}" class="btn btn-danger">Excluir</a>
+                </td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+        
+        <a th:href="@{/gradePeriodos/criar}" class="btn btn-success">Adicionar Nova Grade</a>
+    </div>
+
+</body>
+</html>

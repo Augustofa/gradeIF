@@ -72,7 +72,7 @@ public class DisciplinaController {
                 preRequisitos.add(preRequisito);
             }
         }
-        System.out.println("PreRequisitos: " + preRequisitos.toString());
+        // System.out.println("PreRequisitos: " + preRequisitos.toString());
         disciplina.setPreRequisitos(preRequisitos);
         
         List<Horario> horarios = new ArrayList<>();
@@ -87,7 +87,7 @@ public class DisciplinaController {
                 }
             }
         }
-        System.out.println("Horarios: " + horarios.toString());
+        // System.out.println("Horarios: " + horarios.toString());
         disciplina.setHorarios(horarios);
 
         disciplinaRepository.save(disciplina);
@@ -113,7 +113,7 @@ public class DisciplinaController {
             
             List<Horario> horarios = new ArrayList<>();
             for (Horario horario : disciplina.getHorarios()) {
-                System.out.println("Horario: " + horario.getCombinaDiaHora());
+                // System.out.println("Horario: " + horario.getCombinaDiaHora());
                 List<Horario> tempDia = horarioRepository.findByDia(horario.getDia());
                 for (Horario tempHorario : tempDia) {
                     if(tempHorario.getHoraInicio().equals(horario.getHoraInicio())) {

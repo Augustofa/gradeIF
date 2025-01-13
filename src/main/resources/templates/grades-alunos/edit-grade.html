@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/navbar.html :: header}">
+<body>
+    <script th:src="@{/js/montagem-grade.js}"></script>
+    <div th:insert="~{fragments/navbar.html :: navbar}"></div>
+    <h1>Editar Grade de Aluno</h1>
+    <form class="col-lg-6" th:action="@{/grades-alunos/salvar}" th:object="${gradeForm}" method="post">
+        <div class="form-inline">
+            <label for="nomeAluno" style="padding-right: 1vh;">Aluno:</label>
+            <input type="text" th:field="*{nomeAluno}" id="nomeAluno" class="form-control" readonly>
+        </div><br>
+        <input type="hidden" id="idGrade" th:value="${gradeAluno.id}" th:name="idGrade">
+        <div>
+            <label for="idDisciplina">Disciplina:</label>
+            <select id="idDisciplina" name="disciplina" th:field="*{idDisciplina}">
+                <option value="">Selecione a Disciplina</option>
+                <option th:each="disciplina : ${disciplinas}" th:value="${disciplina.id}" th:text="${disciplina.nome}" th:name="idDisciplina"></option>
+            </select>
+            <input type="submit" th:formaction="'/grades-alunos/editar/' + ${gradeAluno.id} + '/add'" value="Adicionar Disciplina">
+        </div>
+        <div>
+            <label for="horarios">Selecione os horários:</label>
+            <input type="hidden" id="horarios">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Segunda</th>
+                        <th>Terça</th>
+                        <th>Quarta</th>
+                        <th>Quinta</th>
+                        <th>Sexta</th>
+                        <th>Sábado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>19:00</td>
+                        <td class="selectable" data-day="Segunda" data-time="19:00"></td>
+                        <td class="selectable" data-day="Terça" data-time="19:00"></td>
+                        <td class="selectable" data-day="Quarta" data-time="19:00"></td>
+                        <td class="selectable" data-day="Quinta" data-time="19:00"></td>
+                        <td class="selectable" data-day="Sexta" data-time="19:00"></td>
+                        <td class="selectable" data-day="Sábado" data-time="19:00"></td>
+                    </tr>
+                    <tr>
+                        <td>20:50</td>
+                        <td class="selectable" data-day="Segunda" data-time="20:50"></td>
+                        <td class="selectable" data-day="Terça" data-time="20:50"></td>
+                        <td class="selectable" data-day="Quarta" data-time="20:50"></td>
+                        <td class="selectable" data-day="Quinta" data-time="20:50"></td>
+                        <td class="selectable" data-day="Sexta" data-time="20:50"></td>
+                        <td class="selectable" data-day="Sábado" data-time="20:50"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- <span th:if="${#fields.hasErrors('horarios')}" th:errors="*{horarios}" class="text-danger"></span> -->
+        </div> 
+        <div>
+            <button type="submit">Confirmar Grade</button>
+        </div>
+    </form>
+</body>
+</html>
