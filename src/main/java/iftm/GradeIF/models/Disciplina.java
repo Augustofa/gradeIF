@@ -1,5 +1,6 @@
 package iftm.GradeIF.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -43,6 +44,14 @@ public class Disciplina {
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<Horario> horarios;
     private List<String> horariosNomes;
+
+    public Disciplina(){
+        preRequisitos = new ArrayList<>();
+        preRequisitosNomes = new ArrayList<>();
+        horarios = new ArrayList<>();
+        horariosNomes = new ArrayList<>();
+
+    }
 
     public Boolean subtraiVaga(){
         if(this.vagas > 0){

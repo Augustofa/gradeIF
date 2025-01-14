@@ -20,14 +20,9 @@ public class GradePeriodoController {
 
     private final GradePeriodoRepository gradePeriodoRepository;
     private final CursoRepository cursoRepository;
-    private final DisciplinaRepository disciplinaRepository;
-    private final EntityManager entityManager;
-
     public GradePeriodoController(GradePeriodoRepository gradePeriodoRepository, CursoRepository cursoRepository, DisciplinaRepository disciplinaRepository, EntityManager entityManager) {
         this.gradePeriodoRepository = gradePeriodoRepository;
         this.cursoRepository = cursoRepository;
-        this.disciplinaRepository = disciplinaRepository;
-        this.entityManager = entityManager;
     }
 
     @GetMapping
@@ -41,7 +36,6 @@ public class GradePeriodoController {
         for (GradePeriodo gradePeriodo : gradePeriodos) {
             String nomeCurso = gradePeriodo.getNomeCurso();
             Curso curso = cursoRepository.findByNome(nomeCurso).getFirst();
-            System.out.println("Encontrado: " + curso.toString());
             gradePeriodo.setCurso(curso);
             gradePeriodoRepository.save(gradePeriodo);
         }

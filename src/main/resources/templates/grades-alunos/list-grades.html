@@ -13,6 +13,7 @@
                 <th>ID</th>
                 <th>Aluno</th>
                 <th>Período</th>
+                <th>Créditos</th>
                 <th>Status</th>
                 <th>Ações</th>
                 </tr>
@@ -22,6 +23,7 @@
                     <td th:text="${gradeAluno.id}"></td>
                     <td th:text="${gradeAluno.aluno.nome}"></td>
                     <td th:text="${gradeAluno.periodo}"></td>
+                    <td th:text="${gradeAluno.calcCreditos()}"></td>
                     <td th:text="${gradeAluno.confirmada ? 'Confirmada' : 'Em Progresso'}" th:class="${gradeAluno.confirmada ? 'confirmado' : 'em-progresso'}"></td>
                     <td>
                         <a th:href="@{/grades-alunos/editar/{id}(id=${gradeAluno.id})}" class="btn btn-primary">Editar</a>

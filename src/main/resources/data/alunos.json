@@ -3,7 +3,7 @@
         "id": null,
         "nome": "João Silva",
         "cpf": "123.456.789-00",
-        "semestreIngresso": "2022-1",
+        "semestreIngresso": "2022.1",
         "curso": {
             "id": null,
             "nome": "Engenharia Elétrica",
@@ -15,7 +15,7 @@
         "id": null,
         "nome": "Maria Oliveira",
         "cpf": "987.654.321-00",
-        "semestreIngresso": "2023-1",
+        "semestreIngresso": "2023.1",
         "curso": {
             "id": null,
             "nome": "Análise e Desenvolvimento de Sistemas",
@@ -27,7 +27,7 @@
         "id": null,
         "nome": "Pedro Santos",
         "cpf": "456.789.123-00",
-        "semestreIngresso": "2024-2",
+        "semestreIngresso": "2024.2",
         "curso": {
             "id": null,
             "nome": "Gestão Comercial",

@@ -31,12 +31,10 @@ public class GradeAlunoController {
     private final GradeAlunoRepository gradeAlunoRepository;
     private final AlunoRepository alunoRepository;
     private final DisciplinaRepository disciplinaRepository;
-    private final EntityManager entityManager;
     public GradeAlunoController(GradeAlunoRepository gradeAlunoRepository, AlunoRepository alunoRepository, DisciplinaRepository disciplinaRepository, GradeFormRepository gradeFormRepository, EntityManager entityManager) {
         this.gradeAlunoRepository = gradeAlunoRepository;
         this.alunoRepository = alunoRepository;
         this.disciplinaRepository = disciplinaRepository;
-        this.entityManager = entityManager;
     }
 
     @GetMapping
@@ -66,7 +64,7 @@ public class GradeAlunoController {
         List<GradeAluno> gradesExistentes = gradeAlunoRepository.findByAluno(aluno);
         Boolean jaExiste = false;
         for(GradeAluno tempGrade : gradesExistentes){
-            if(tempGrade.getPeriodo() == periodoAtual){
+            if(tempGrade.getPeriodo().equals(periodoAtual)){
                 jaExiste = true;
             }
         }
@@ -81,7 +79,6 @@ public class GradeAlunoController {
         for (GradeAluno gradeAluno : gradeAlunos) {
             String nomeAluno = gradeAluno.getNomeAluno();
             Aluno aluno = alunoRepository.findByNome(nomeAluno).getFirst();
-            System.out.println("Encontrado: " + aluno.toString());
             gradeAluno.setAluno(aluno);
             gradeAlunoRepository.save(gradeAluno);
         }
@@ -112,7 +109,7 @@ public class GradeAlunoController {
         model.addAttribute("aluno", gradeAluno.getAluno());
         model.addAttribute("disciplinas", discRestantes);
         return "grades-alunos/edit-grade";
-        }
+    }
 
     @PostMapping("/editar/{id}/add")
     public String formularioAdicionarDisciplinaGrade(@PathVariable("id") int id, @ModelAttribute GradeAluno gradeAluno, BindingResult result, Model model) {

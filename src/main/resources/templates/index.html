@@ -9,5 +9,12 @@
             <img th:src="@{/imgs/logo.png}" alt="logo-gradeif" class="img-fluid" id="logo-grande">
         </a>
     </div>
+
+    <script>
+        document.getElementById("img-clique").addEventListener('click', function() {
+            const element = document.getElementById("img-clique");
+            element.style.display = "none";
+    });
+    </script>
 </body>
 </html>

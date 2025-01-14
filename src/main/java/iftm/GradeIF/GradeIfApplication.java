@@ -20,7 +20,6 @@ import iftm.GradeIF.controllers.GradePeriodoController;
 import iftm.GradeIF.models.Aluno;
 import iftm.GradeIF.models.Curso;
 import iftm.GradeIF.models.Disciplina;
-import iftm.GradeIF.models.GradeForm;
 import iftm.GradeIF.models.GradePeriodo;
 import iftm.GradeIF.models.Horario;
 import iftm.GradeIF.models.Professor;
@@ -52,9 +51,6 @@ public class GradeIfApplication implements CommandLineRunner {
 	private final HorarioRepository repositoryHorarios;
 	private final DisciplinaRepository repositoryDisciplinas;
 	private final GradePeriodoRepository repositoryGradePeriodo;
-	private final GradeAlunoRepository repositoryGradeAlunos;
-	private final GradeFormRepository repositoryGradeForm;
-
 	private final ObjectMapper objectMapper;
 	private final EntityManager entityManager;
 
@@ -69,8 +65,6 @@ public class GradeIfApplication implements CommandLineRunner {
 		this.repositoryHorarios = repositoryHorarios;
 		this.repositoryDisciplinas = repositoryDisciplinas;
 		this.repositoryGradePeriodo = repositoryGradePeriodo;
-		this.repositoryGradeAlunos = repositoryGradeAlunos;
-		this.repositoryGradeForm = repositoryGradeForm;
 		this.objectMapper = objectMapper;
 		this.entityManager = entityManager;
 		this.entityManagerFactory = entityManagerFactory;
