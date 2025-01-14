@@ -3,5 +3,11 @@
 <head th:replace="~{fragments/navbar.html :: header}">
 <body>
     <div th:insert="~{fragments/navbar.html :: navbar}"></div>
+    <img th:src="@{/imgs/clique.png}" alt="logo-gradeif" class="img-fluid" id="img-clique">
+    <div class="d-flex justify-content-center align-items-center" style="height: calc(100vh - 250px);">
+        <a class="navbar-brand" th:href="@{/}">
+            <img th:src="@{/imgs/logo.png}" alt="logo-gradeif" class="img-fluid" id="logo-grande">
+        </a>
+    </div>
 </body>
 </html>

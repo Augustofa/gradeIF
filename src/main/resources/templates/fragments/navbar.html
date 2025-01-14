@@ -10,11 +10,15 @@
 </head>
 <body th:fragment="navbar" id="main">
     <div>
-        <nav class="navbar navbar-light bg-light fixed-top">
+        <nav class="navbar navbar-light fixed-top" id="navbar">
             <button class="navbar-toggler" type="button" onclick="toggleNav()">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="/">GradeIF</a>
+            <a class="navbar-brand" th:href="@{/}">
+                <div id="div-logo">
+                    <img th:src="@{/imgs/logo.png}" alt="logo-gradeif" class="img-fluid" id="img-logo">
+                </div>
+            </a>
         </nav>
 
         <div id="sidebar" class="bg-dark">
