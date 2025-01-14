@@ -13,7 +13,7 @@
                 <th>ID</th>
                 <th>Aluno</th>
                 <th>Período</th>
-                <th>Disciplinas</th>
+                <th>Status</th>
                 <th>Ações</th>
                 </tr>
             </thead>
@@ -22,11 +22,7 @@
                     <td th:text="${gradeAluno.id}"></td>
                     <td th:text="${gradeAluno.aluno.nome}"></td>
                     <td th:text="${gradeAluno.periodo}"></td>
-                    <td>
-                        <ul>
-                            <li th:each="disciplina : ${gradeAluno.disciplinas}" th:text="${disciplina.codigo}"></li>
-                        </ul>
-                    </td>
+                    <td th:text="${gradeAluno.confirmada ? 'Confirmada' : 'Em Progresso'}" th:class="${gradeAluno.confirmada ? 'confirmado' : 'em-progresso'}"></td>
                     <td>
                         <a th:href="@{/grades-alunos/editar/{id}(id=${gradeAluno.id})}" class="btn btn-primary">Editar</a>
                         <a th:href="@{/grades-alunos/deletar/{id}(id=${gradeAluno.id})}" class="btn btn-danger">Excluir</a>

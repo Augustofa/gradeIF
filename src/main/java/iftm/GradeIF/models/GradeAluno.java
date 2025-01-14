@@ -27,12 +27,28 @@ public class GradeAluno extends Grade {
     private List<Disciplina> disciplinas;
     private Integer idDiscSelecionada;
 
+    private Boolean confirmada;
+
     public GradeAluno() {
         this.setTipo(0);
         disciplinas = new ArrayList<>();
+        confirmada = false;
+    }
+
+    public Boolean checaDisciplina(int id){
+        for(Disciplina disciplina : disciplinas){
+            if(disciplina.getId() == id){
+                return true;
+            }
+        }
+        return false;
     }
 
     public int calcCreditos(){
-        return 0;
+        int somaCreditos = 0;
+        for(Disciplina disciplina : disciplinas){
+            somaCreditos += disciplina.getCreditos();
+        }
+        return somaCreditos;
     }
 }

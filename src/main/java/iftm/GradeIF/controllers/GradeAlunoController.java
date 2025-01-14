@@ -59,9 +59,20 @@ public class GradeAlunoController {
         }
         Aluno aluno = alunoRepository.findByNome(gradeAluno.getNomeAluno()).getFirst();
         gradeAluno.setAluno(aluno);
-        gradeAluno.setPeriodo("2025.1");
 
-        gradeAlunoRepository.save(gradeAluno);
+        String periodoAtual = "2025.1";
+        gradeAluno.setPeriodo(periodoAtual);
+
+        List<GradeAluno> gradesExistentes = gradeAlunoRepository.findByAluno(aluno);
+        Boolean jaExiste = false;
+        for(GradeAluno tempGrade : gradesExistentes){
+            if(tempGrade.getPeriodo() == periodoAtual){
+                jaExiste = true;
+            }
+        }
+        if(!jaExiste){
+            gradeAlunoRepository.save(gradeAluno);
+        }
         return "redirect:/grades-alunos";
     }
 
@@ -75,7 +86,7 @@ public class GradeAlunoController {
             gradeAlunoRepository.save(gradeAluno);
         }
         return gradeAlunos;
-        }
+    }
 
     @GetMapping("/editar/{id}")
         public String formularioEditarGradeAluno(@PathVariable("id") int id, Model model) {
@@ -111,10 +122,31 @@ public class GradeAlunoController {
         }
         
         GradeAluno gradeExistente = gradeAlunoRepository.findById(id).get();
+        
+        List<Disciplina> discRestantes = disciplinaRepository.findAll();
 
         Disciplina disciplina = disciplinaRepository.findById(gradeAluno.getIdDiscSelecionada()).get();
+        List<Disciplina> preRequisitos = disciplina.getPreRequisitos();
 
-        List<Disciplina> discRestantes = disciplinaRepository.findAll();
+        Aluno aluno = alunoRepository.findById(gradeExistente.getAluno().getId()).get();
+
+        List<GradeAluno> gradesPassadasAluno = gradeAlunoRepository.findByAluno(aluno);
+
+        String preReqFaltando = "";
+        for(Disciplina preRequisito : preRequisitos){
+            Boolean encontrado = false;
+            for(GradeAluno grade : gradesPassadasAluno){
+                if(grade.checaDisciplina(preRequisito.getId()) && grade.getConfirmada()){
+                    encontrado = true;
+                }
+            };
+            if(!encontrado){
+                if(!preReqFaltando.isEmpty()){
+                    preReqFaltando += ", ";
+                }
+                preReqFaltando += preRequisito.getCodigo();
+            }
+        };
 
         List<Disciplina> listDisciplinas = gradeExistente.getDisciplinas();
         Boolean repetida = false;
@@ -123,11 +155,12 @@ public class GradeAlunoController {
                 repetida = true;
             }
         }
-        if(!repetida){
+        if(!repetida && preReqFaltando.isEmpty()){
             disciplina.subtraiVaga();
             listDisciplinas.add(disciplina);
         }
         gradeExistente.setDisciplinas(listDisciplinas);
+        gradeExistente.setConfirmada(false);
         
         gradeAlunoRepository.saveAndFlush(gradeExistente);
 
@@ -141,10 +174,14 @@ public class GradeAlunoController {
             discHorario.setHorarios(horarios);
             discHorario.setCodigo(tempDisc.getCodigo());
             discHorarios.add(discHorario);
+            if(!preReqFaltando.isEmpty()){
+                discHorario.setPreReqCumpridos(false);
+            }
 
             discRestantes.remove(tempDisc);
         }
 
+        model.addAttribute("preRequisitos", preReqFaltando);
         model.addAttribute("discHorarios", discHorarios);
         model.addAttribute("gradeAluno", gradeExistente);
         model.addAttribute("aluno", gradeExistente.getAluno());
@@ -189,14 +226,27 @@ public class GradeAlunoController {
             discRestantes.remove(tempDisc);
         }
 
-        System.out.println("Horarios: " + discHorarios.toString());
-
         model.addAttribute("discHorarios", discHorarios);
         model.addAttribute("gradeAluno", gradeExistente);
         model.addAttribute("aluno", gradeExistente.getAluno());
         model.addAttribute("disciplinas", discRestantes);
 
         return "grades-alunos/edit-grade";
+    }
+
+    @PostMapping("/editar/{idGrade}/confirmar")
+    public String confirmaGrade(@PathVariable("idGrade") int idGrade, @ModelAttribute GradeAluno gradeAluno, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            System.out.println(result.getAllErrors());
+            return "grades-alunos/edit-grade";
+        }
+        
+        GradeAluno gradeExistente = gradeAlunoRepository.findById(idGrade).get();
+        gradeExistente.setConfirmada(true);
+        
+        gradeAlunoRepository.saveAndFlush(gradeExistente);
+
+        return "redirect:/grades-alunos";
     }
 
     @GetMapping("/deletar/{id}")

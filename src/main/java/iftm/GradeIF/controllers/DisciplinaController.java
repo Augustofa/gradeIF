@@ -87,7 +87,7 @@ public class DisciplinaController {
                 }
             }
         }
-        // System.out.println("Horarios: " + horarios.toString());
+        System.out.println("Horarios: " + horarios.toString());
         disciplina.setHorarios(horarios);
 
         disciplinaRepository.save(disciplina);

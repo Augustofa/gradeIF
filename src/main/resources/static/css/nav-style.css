@@ -1,5 +1,4 @@
 body {
-    overflow-x: hidden;
     scroll-padding-top: 50px;
 }
 #content{
@@ -38,4 +37,18 @@ body {
 #main {
     transition: margin-left .5s;
     padding: 16px;
+}
+
+.tabelaHorarios td {
+    text-align: center;
+    vertical-align: middle;
+}
+.confirmado{
+    color: green;
+}
+.em-progresso{
+    color: red;
+}
+.alerta{
+    background-color: rgb(255, 180, 100);
 }

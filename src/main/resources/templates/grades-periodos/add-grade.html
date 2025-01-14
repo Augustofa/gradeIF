@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/navbar.html :: header}">
+<body>
+    <div th:insert="~{fragments/navbar.html :: navbar}"></div>
+    <h1>Criar Grade</h1>
+    <form class="col-lg-6" th:action="@{/grades-alunos/salvar}" th:object="${gradeAluno}" method="post">
+        <div>
+            <label for="aluno">Aluno:</label>
+            <select id="aluno" th:field="*{nomeAluno}" name="aluno">
+            <option value="">Selecione o Aluno</option>
+            <option th:each="aluno : ${alunos}" th:value="${aluno.nome}" th:text="${aluno.nome}"></option>
+            </select>
+        </div>
+
+        <div>
+            <button type="submit">Adicionar Grade</button>
+        </div>
+    </form>
+</body>
+</html>

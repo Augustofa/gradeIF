@@ -41,7 +41,6 @@
         <div>
             <label for="preRequisitos">Pré-requisitos:</label>
             <select id="preRequisitos" th:field="*{preRequisitosNomes}" name="preRequisitos" multiple="true">
-                <option value="">Placeholder</option>
                 <option th:each="disciplina : ${disciplinas}" th:value="${disciplina.nome}" th:text="${disciplina.nome}"></option>
             </select>
             <span th:if="${#fields.hasErrors('preRequisitos')}" th:errors="*{preRequisitos}" class="text-danger"></span>
