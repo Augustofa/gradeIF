@@ -44,7 +44,17 @@
                 <option th:each="disciplina : ${disciplinas}" th:value="${disciplina.nome}" th:text="${disciplina.nome}"></option>
             </select>
             <span th:if="${#fields.hasErrors('preRequisitos')}" th:errors="*{preRequisitos}" class="text-danger"></span>
+
+            <input type="hidden" th:field="*{selectedTopics}" id="selectedTopicsInput" />
+
+            <div id="selectedTopicsList">
+                <ul>
+                    <li th:each="topic : ${topicForm.selectedTopics}" th:text="${topic}"></li>
+                </ul>
+            </div>
         </div>
+
+
         <div>
             <label for="horarios">Selecione os horários:</label>
             <input type="hidden" th:field="*{horariosNomes}" id="horarios">
