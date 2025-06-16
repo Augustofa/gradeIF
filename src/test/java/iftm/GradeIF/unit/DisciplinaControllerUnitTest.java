@@ -38,7 +38,7 @@ class DisciplinaControllerUnitTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        MockitoAnnotations.initMocks(this);
 
         professorMock = new Professor();
         professorMock.setId(1);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="~{fragments/navbar.html :: header}">
 <body>
     <div>
@@ -27,7 +27,7 @@
                             <td th:text="${aluno.semestreIngresso}"></td>
                             <td>
                                 <a th:href="@{/alunos/editar/{id}(id=${aluno.id})}" class="btn btn-primary">Editar</a>
-                                <a th:href="@{/alunos/deletar/{id}(id=${aluno.id})}" class="btn btn-danger">Excluir</a>
+                                <a th:href="@{/alunos/deletar/{id}(id=${aluno.id})}" class="btn btn-danger" sec:authorize="hasAuthority('Admin')">Excluir</a>
                             </td>
                         </tr>
                     </tbody>

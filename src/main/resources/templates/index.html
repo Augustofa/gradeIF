@@ -1,21 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head th:replace="~{fragments/navbar.html :: header}">
 <body>
     <div th:insert="~{fragments/navbar.html :: navbar}"></div>
-    <img th:src="@{/imgs/clique.png}" alt="logo-gradeif" class="img-fluid" id="img-clique">
-    <div class="d-flex justify-content-center align-items-center" style="height: calc(100vh - 250px);">
+    <div class="d-flex justify-content-center align-items-center" style="height: calc(100vh - 250px); padding-top: 150px;">
         <a class="navbar-brand" th:href="@{/}">
             <img th:src="@{/imgs/logo.png}" alt="logo-gradeif" class="img-fluid" id="logo-grande">
         </a>
     </div>
-
-    <script>
-        document.getElementById("navbar-toggle-button").addEventListener('click', function() {
-            const element = document.getElementById("img-clique");
-            element.style.display = "none";
-            document.getElementById("logo-grande").style.paddingTop = "90px";
-        });
-    </script>
 </body>
 </html>

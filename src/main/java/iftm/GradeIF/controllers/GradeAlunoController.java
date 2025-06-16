@@ -3,6 +3,10 @@ package iftm.GradeIF.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import iftm.GradeIF.models.*;
+import iftm.GradeIF.repositories.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,15 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import iftm.GradeIF.models.Aluno;
-import iftm.GradeIF.models.Disciplina;
-import iftm.GradeIF.models.DisciplinaHorario;
-import iftm.GradeIF.models.GradeAluno;
-import iftm.GradeIF.models.Horario;
-import iftm.GradeIF.repositories.AlunoRepository;
-import iftm.GradeIF.repositories.DisciplinaRepository;
-import iftm.GradeIF.repositories.GradeAlunoRepository;
-import iftm.GradeIF.repositories.GradeFormRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -31,15 +26,25 @@ public class GradeAlunoController {
     private final GradeAlunoRepository gradeAlunoRepository;
     private final AlunoRepository alunoRepository;
     private final DisciplinaRepository disciplinaRepository;
-    public GradeAlunoController(GradeAlunoRepository gradeAlunoRepository, AlunoRepository alunoRepository, DisciplinaRepository disciplinaRepository, GradeFormRepository gradeFormRepository, EntityManager entityManager) {
+    private final UsuarioRepository usuarioRepository;
+
+    public GradeAlunoController(GradeAlunoRepository gradeAlunoRepository, AlunoRepository alunoRepository, DisciplinaRepository disciplinaRepository, GradeFormRepository gradeFormRepository, EntityManager entityManager, UsuarioRepository usuarioRepository) {
         this.gradeAlunoRepository = gradeAlunoRepository;
         this.alunoRepository = alunoRepository;
         this.disciplinaRepository = disciplinaRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @GetMapping
-    public String listaGradeAlunos(Model model) {
-        model.addAttribute("gradesAlunos", gradeAlunoRepository.findAll());
+    public String listaGradeAlunos(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        Usuario usuario = usuarioRepository.findByLogin(userDetails.getUsername()).get();
+        if(usuario.getAluno() == null){
+            model.addAttribute("gradesAlunos", gradeAlunoRepository.findAll());
+        }else{
+            List<GradeAluno> gradesAluno = gradeAlunoRepository.findByAluno(usuario.getAluno());
+            model.addAttribute("gradesAlunos", gradesAluno);
+        }
+
         return "grades-alunos/list-grades";
         }
 
@@ -62,7 +67,7 @@ public class GradeAlunoController {
         gradeAluno.setPeriodo(periodoAtual);
 
         List<GradeAluno> gradesExistentes = gradeAlunoRepository.findByAluno(aluno);
-        Boolean jaExiste = false;
+        boolean jaExiste = false;
         for(GradeAluno tempGrade : gradesExistentes){
             if(tempGrade.getPeriodo().equals(periodoAtual)){
                 jaExiste = true;
@@ -99,6 +104,7 @@ public class GradeAlunoController {
             }
             discHorario.setHorarios(horarios);
             discHorario.setCodigo(tempDisc.getCodigo());
+            discHorario.setNome(tempDisc.getNome());
             discHorarios.add(discHorario);
 
             discRestantes.remove(tempDisc);
@@ -119,7 +125,7 @@ public class GradeAlunoController {
         }
         
         GradeAluno gradeExistente = gradeAlunoRepository.findById(id).get();
-        
+
         List<Disciplina> discRestantes = disciplinaRepository.findAll();
 
         Disciplina disciplina = disciplinaRepository.findById(gradeAluno.getIdDiscSelecionada()).get();
@@ -136,7 +142,7 @@ public class GradeAlunoController {
                 if(grade.checaDisciplina(preRequisito.getId()) && grade.getConfirmada()){
                     encontrado = true;
                 }
-            };
+            }
             if(!encontrado){
                 if(!preReqFaltando.isEmpty()){
                     preReqFaltando += ", ";
@@ -168,8 +174,9 @@ public class GradeAlunoController {
             for(Horario tempHorario : tempDisc.getHorarios()){
                 horarios.add(tempHorario);
             }
-            discHorario.setHorarios(horarios);
             discHorario.setCodigo(tempDisc.getCodigo());
+            discHorario.setNome(tempDisc.getNome());
+            discHorario.setHorarios(horarios);
             discHorarios.add(discHorario);
             if(!preReqFaltando.isEmpty()){
                 discHorario.setPreReqCumpridos(false);
@@ -216,8 +223,9 @@ public class GradeAlunoController {
             for(Horario tempHorario : tempDisc.getHorarios()){
                 horarios.add(tempHorario);
             }
-            discHorario.setHorarios(horarios);
             discHorario.setCodigo(tempDisc.getCodigo());
+            discHorario.setNome(tempDisc.getNome());
+            discHorario.setHorarios(horarios);
             discHorarios.add(discHorario);
 
             discRestantes.remove(tempDisc);

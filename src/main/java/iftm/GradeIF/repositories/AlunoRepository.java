@@ -12,6 +12,6 @@ import iftm.GradeIF.models.Curso;
 @Repository
 public interface AlunoRepository extends CrudRepository<Aluno, Integer>{
     List<Aluno> findByNome(String nome);
-    List<Aluno> findByCpf(String cpf);
+    Aluno findByCpf(String cpf);
     List<Aluno> findByCurso(Curso curso);
 }

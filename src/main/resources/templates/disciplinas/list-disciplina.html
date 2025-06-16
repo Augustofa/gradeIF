@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head th:replace="~{fragments/navbar.html :: header}">
 <body>
     <div>
@@ -19,7 +19,7 @@
                             <th>Créditos</th>
                             <th>Pré-Requisitos</th>
                             <th>Horários</th>
-                            <th>Ações</th>
+                            <th sec:authorize="hasAuthority('Admin')">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,14 +39,14 @@
                                 </ul>
                             </td>
                             <td>
-                                <a th:href="@{/disciplinas/deletar/{id}(id=${disciplina.id})}" class="btn btn-danger">Excluir</a>
+                                <a th:href="@{/disciplinas/deletar/{id}(id=${disciplina.id})}" class="btn btn-danger" sec:authorize="hasAuthority('Admin')">Excluir</a>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             
-            <a th:href="@{/disciplinas/criar}" class="btn btn-success">Adicionar Nova Disciplina</a>
+            <a th:href="@{/disciplinas/criar}" class="btn btn-success" sec:authorize="hasAuthority('Admin')">Adicionar Nova Disciplina</a>
         </div>
     </div>
 </body>

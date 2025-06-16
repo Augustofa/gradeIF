@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/navbar.html :: header}">
 <body>
-    <div>
     <div th:insert="~{fragments/navbar.html :: navbar}"></div>
     <div th:switch="${gradesAlunos}">
         <h2 th:case="null">Sem grades cadastradas</h2>
@@ -27,14 +26,16 @@
                     <td th:text="${gradeAluno.confirmada ? 'Confirmada' : 'Em Progresso'}" th:class="${gradeAluno.confirmada ? 'confirmado' : 'em-progresso'}"></td>
                     <td>
                         <a th:href="@{/grades-alunos/editar/{id}(id=${gradeAluno.id})}" class="btn btn-primary">Editar</a>
-                        <a th:href="@{/grades-alunos/deletar/{id}(id=${gradeAluno.id})}" class="btn btn-danger">Excluir</a>
+                        <a th:href="@{/grades-alunos/deletar/{id}(id=${gradeAluno.id})}" class="btn btn-danger" sec:authorize="hasAuthority('Admin')">Excluir</a>
                     </td>
                 </tr>
             </tbody>
             </table>
         </div>
+
+
         
-        <a th:href="@{/grades-alunos/criar}" class="btn btn-success">Adicionar Nova Grade</a>
+        <a th:href="@{/grades-alunos/criar}" class="btn btn-success" sec:authorize="hasAuthority('Admin')">Adicionar Nova Grade</a>
     </div>
 </body>
 </html>

@@ -8,6 +8,8 @@ import lombok.Data;
 public class DisciplinaHorario {
     private String codigo;
 
+    private String nome;
+
     private List<Horario> horarios;
 
     private Boolean preReqCumpridos;

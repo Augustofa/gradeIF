@@ -23,7 +23,7 @@ public class Aluno {
     @NotBlank(message = "CPF é obrigatório")
     private String cpf;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "curso_id", referencedColumnName = "id")
     private Curso curso;
 

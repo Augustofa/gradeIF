@@ -34,10 +34,11 @@ import iftm.GradeIF.repositories.ProfessorRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.transaction.Transactional;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @EnableJpaRepositories
-@ComponentScan("iftm.GradeIF.controllers")
 @EntityScan("iftm.GradeIF.models")
+@ComponentScan(basePackages = {"iftm.GradeIF.services","iftm.GradeIF.controllers", "iftm.GradeIF.impls"})
 @SpringBootApplication
 public class GradeIfApplication implements CommandLineRunner {
 
@@ -54,7 +55,6 @@ public class GradeIfApplication implements CommandLineRunner {
 	private final ObjectMapper objectMapper;
 	private final EntityManager entityManager;
 
-	@SuppressWarnings("unused")
 	@Autowired
 	private final EntityManagerFactory entityManagerFactory;
 

@@ -28,13 +28,10 @@ import jakarta.validation.Valid;
 @RequestMapping("/disciplinas")
 public class DisciplinaController {
 
-    @Autowired
     private final DisciplinaRepository disciplinaRepository;
 
-    @Autowired
     private final ProfessorRepository professorRepository;
 
-    @Autowired
     private final HorarioRepository horarioRepository;
 
     @PersistenceContext
@@ -68,7 +65,7 @@ public class DisciplinaController {
         List<Disciplina> preRequisitos = new ArrayList<>();
         if(!disciplina.getPreRequisitosNomes().isEmpty()) {
             for (String codigo : disciplina.getPreRequisitosNomes()) {
-                Disciplina preRequisito = disciplinaRepository.findByCodigo(codigo).getFirst();
+                Disciplina preRequisito = disciplinaRepository.findByNome(codigo).getFirst();
                 preRequisitos.add(preRequisito);
             }
         }

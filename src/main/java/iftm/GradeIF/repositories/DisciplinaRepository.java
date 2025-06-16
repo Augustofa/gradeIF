@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface DisciplinaRepository extends JpaRepository<Disciplina, Integer>{
     List<Disciplina> findByCodigo(String codigo);
+    List<Disciplina> findByNome(String nome);
 }

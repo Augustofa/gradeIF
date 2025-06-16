@@ -14,7 +14,7 @@
                             <th>Nome</th>
                             <th>Descrição</th>
                             <th>Quant. Semestres</th>
-                            <th>Ações</th>
+                            <th sec:authorize="hasAuthority('Admin')">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -24,7 +24,7 @@
                             <td th:text="${curso.descricao}"></td>
                             <td th:text="${curso.quantSemestres}"></td>
                             <td>
-                                <a th:href="@{/cursos/deletar/{id}(id=${curso.id})}" class="btn btn-danger">Excluir</a>
+                                <a th:href="@{/cursos/deletar/{id}(id=${curso.id})}" class="btn btn-danger" sec:authorize="hasAuthority('Admin')">Excluir</a>
                             </td>
                         </tr>
                     </tbody>

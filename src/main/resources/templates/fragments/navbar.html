@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="header">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>GradeIF</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/css/nav-style.css}">
+    <link rel="stylesheet" th:href="@{/css/grade-style.css}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script th:src="@{/js/nav-func.js}"></script>
 </head>
 <body th:fragment="navbar" id="main">
@@ -14,24 +17,31 @@
             <button id="navbar-toggle-button" class="navbar-toggler" type="button" onclick="toggleNav()">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" th:href="@{/}">
+            <a class="navbar-brand mx-auto" th:href="@{/}">
                 <div id="div-logo">
                     <img th:src="@{/imgs/logo.png}" alt="logo-gradeif" class="img-fluid" id="img-logo">
                 </div>
             </a>
+            <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <button type="submit" class="btn logout-custom my-2 my-sm-0 d-flex align-items-center">
+                    <img th:src="@{/imgs/logout.png}" alt="Sair" class="logout-icon me-2">
+                    <span class="logout-text">Sair</span>
+                </button>
+            </form>
         </nav>
 
         <div id="sidebar" class="bg-dark">
-            <a th:href="@{/alunos}">Alunos</a>
+            <a th:href="@{/grades-alunos}">Grades Horárias</a>
+            <a th:href="@{/alunos}" sec:authorize="hasAuthority('Admin')">Alunos</a>
             <a th:href="@{/cursos}">Cursos</a>
-            <a th:href="@{/professores}">Professores</a>
-            <a th:href="@{/horarios}">Horários</a>
+            <a th:href="@{/professores}" sec:authorize="hasAuthority('Admin')">Professores</a>
+<!--            <a th:href="@{/horarios}" sec:authorize="hasAuthority('Admin')">Horários</a>-->
             <a th:href="@{/disciplinas}">Disciplinas</a>
-            <a th:href="@{/grades-periodos}">PPCs</a>
-            <a th:href="@{/grades-alunos}">Grades de Alunos</a>
+            <a th:href="@{/grades-periodos}" sec:authorize="hasAuthority('Admin')">PPCs</a>
         </div>
 
-        <div id="content">
+        <div id="content"></div>
     </div>
 </body>
 </html>

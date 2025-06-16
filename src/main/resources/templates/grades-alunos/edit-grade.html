@@ -18,39 +18,36 @@
             </select>
             <input type="submit" th:formaction="'/grades-alunos/editar/' + ${gradeAluno.id} + '/add'" value="Adicionar Disciplina" class="btnConfirmar">
         </div>
-        <div>
+        <div class="table-responsive">
             <br><label for="horarios">Grade Montada:</label>
             <input type="hidden" id="horarios">
-            <table class="table table-bordered tabelaHorarios" style="width: 80%">
+            <table id="tabelaHorarios" class="table table-bordered w-100" >
                 <thead>
-                    <tr>
-                        <th></th>
+                    <tr id="headerHorarios">
+                        <th class="bg-light"></th>
                         <th>Segunda</th>
                         <th>Terça</th>
                         <th>Quarta</th>
                         <th>Quinta</th>
                         <th>Sexta</th>
-                        <th>Sábado</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>19:00 - 20:40</td>
+                        <td class="vertHeaderHorarios">19:00 - 20:40</td>
                         <td data-day="Segunda" data-time="19:00-20:40" id="Segunda - 19:00-20:40"></td>
                         <td data-day="Terça" data-time="19:00-20:40" id="Terça - 19:00-20:40"></td>
                         <td data-day="Quarta" data-time="19:00-20:40" id="Quarta - 19:00-20:40"></td>
                         <td data-day="Quinta" data-time="19:00-20:40" id="Quinta - 19:00-20:40"></td>
                         <td data-day="Sexta" data-time="19:00-20:40" id="Sexta - 19:00-20:40"></td>
-                        <td data-day="Sábado" data-time="19:00-20:40" id="Sábado - 19:00-20:40"></td>
                     </tr>
                     <tr>
-                        <td>20:50 - 22:30</td>
+                        <td class="vertHeaderHorarios">20:50 - 22:30</td>
                         <td data-day="Segunda" data-time="20:50-22:30" id="Segunda - 20:50-22:30"></td>
                         <td data-day="Terça" data-time="20:50-22:30" id="Terça - 20:50-22:30"></td>
                         <td data-day="Quarta" data-time="20:50-22:30" id="Quarta - 20:50-22:30"></td>
                         <td data-day="Quinta" data-time="20:50-22:30" id="Quinta - 20:50-22:30"></td>
                         <td data-day="Sexta" data-time="20:50-22:30" id="Sexta - 20:50-22:30"></td>
-                        <td data-day="Sábado" data-time="20:50-22:30" id="Sábado - 20:50-22:30"></td>
                     </tr>
                 </tbody>
             </table>
@@ -63,7 +60,7 @@
 
 
         <br><br>
-        <div class="w-75">
+        <div class="w-100">
             <h2>Disciplinas adicionadas:</h2>
             <div th:switch="${gradeAluno.disciplinas}">
                 <h2 th:case="null">Sem disciplinas cadastradas</h2>
@@ -76,20 +73,20 @@
                                 <th>Sala</th>
                                 <th>Professor</th>
                                 <th>Vagas</th>
-                                <th>Créditos</th>
+<!--                                <th>Créditos</th>-->
                                 <th>Pré-Requisitos</th>
                                 <th>Horários</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="disciplina : ${gradeAluno.disciplinas}" th:id="${disciplina.codigo}">
+                            <tr th:each="disciplina : ${gradeAluno.disciplinas}" th:id="${disciplina.nome}">
                                 <td th:text="${disciplina.codigo}"></td>
                                 <td th:text="${disciplina.nome}"></td>
                                 <td th:text="${disciplina.sala}"></td>
                                 <td th:text="${disciplina.professor.nome}"></td>
                                 <td th:text="${disciplina.vagas}"></td>
-                                <td th:text="${disciplina.creditos}"></td>
+<!--                                <td th:text="${disciplina.creditos}"></td>-->
                                 <td th:if="${disciplina.preRequisitosNomes != null and !disciplina.preRequisitosNomes.isEmpty()}" th:text="${disciplina.preRequisitosNomes}"></td>
                                 <td th:if="${disciplina.preRequisitosNomes == null or disciplina.preRequisitosNomes.isEmpty()}">Sem pré-requisitos</td>
                                 <td>
@@ -116,7 +113,7 @@
             
             var count = horarios.length;
             horarios.forEach(horario => {
-                let codigo = `${horario.codigo}`
+                let codigo = `${horario.nome}`
                 let preReqOk = true;
                 if(count == 1){
                     preReqOk = `${horario.preReqCumpridos}`;
@@ -132,7 +129,7 @@
                 for(let i = 0; i < `${horario.horarios.length}`; i++){
                     let cell = document.getElementById(`${horario.horarios[i].combinaDiaHora}`);
                     cellList.push(cell);
-                    if(cell.textContent != ""){
+                    if(cell.textContent !== ""){
                         valido = false;
                     }
                 }
@@ -148,11 +145,11 @@
                     }
 
                     cellList.forEach(cell => {
-                        if(cell.textContent != ""){
+                        if(cell.textContent !== ""){
                             cell.textContent.split('-').forEach(cellConflito => {
                                 document.getElementById(cellConflito).style.backgroundColor = "rgb(255, 200, 200)";
                             });
-                            cell.textContent += "-" + codigo;
+                            cell.textContent += "\r\n - \r\n" + codigo;
                             cell.style.backgroundColor = "rgb(255, 200, 200)";
                         }else{
                         //     if(!preReqOk){
