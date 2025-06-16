@@ -1,0 +1,66 @@
+#tabelaHorarios {
+    table-layout: fixed;
+    width: 100%;
+    word-wrap: normal;
+    text-align: center;
+    font-size: 1rem;
+
+    td {
+        vertical-align: middle;
+        padding: 0.5rem;
+    }
+}
+
+#tabelaDetalhes {
+    ul {
+        list-style-position: inside;
+        padding-left: 0;
+    }
+}
+
+.btn-responsive {
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+    #tabelaHorarios, #tabelaDetalhes {
+        font-size: 0.7rem;
+    }
+    .btn-responsive {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    #tabelaHorarios, #tabelaDetalhes {
+        font-size: 0.5rem;
+    }
+    .btn-responsive {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.7rem;
+        min-width: 30px; /* Maintain tap target size */
+    }
+}
+
+#headerHorarios {
+    background-color: #000029;
+    color: white;
+}
+
+.vertHeaderHorarios {
+    background-color: dimgray;
+    font-weight: bold;
+}
+
+@media (max-width: 576px) {
+    #tabelaHorarios td,
+    #tabelaHorarios th,
+    #tabelaDetalhes td,
+    #tabelaDetalhes th {
+        padding: 0.3rem;
+    }
+}
