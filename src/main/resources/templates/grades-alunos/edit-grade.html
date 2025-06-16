@@ -64,8 +64,8 @@
             <h2>Disciplinas adicionadas:</h2>
             <div th:switch="${gradeAluno.disciplinas}">
                 <h2 th:case="null">Sem disciplinas cadastradas</h2>
-                <div th:case="*">
-                    <table class="table table-striped">
+                <div th:case="*" class="table-responsive">
+                    <table class="table table-striped" id="tabelaDetalhes">
                         <thead>
                             <tr>
                                 <th>Código</th>
@@ -95,7 +95,7 @@
                                     </ul>
                                 </td>
                                 <td>
-                                    <input type="submit" th:formaction="'/grades-alunos/editar/' + ${gradeAluno.id} + '/remove/' + ${disciplina.id}" value="Remover" class="btn btn-danger">
+                                    <input type="submit" th:formaction="'/grades-alunos/editar/' + ${gradeAluno.id} + '/remove/' + ${disciplina.id}" value="Remover" class="btn btn-danger btn-responsive">
                                 </td>
                             </tr>
                         </tbody>
@@ -149,7 +149,7 @@
                             cell.textContent.split('-').forEach(cellConflito => {
                                 document.getElementById(cellConflito).style.backgroundColor = "rgb(255, 200, 200)";
                             });
-                            cell.textContent += "\r\n - \r\n" + codigo;
+                            cell.innerHTML += "<br> - <br>" + codigo;
                             cell.style.backgroundColor = "rgb(255, 200, 200)";
                         }else{
                         //     if(!preReqOk){

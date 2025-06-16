@@ -10,7 +10,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th sec:authorize="hasAuthority('Admin')">ID</th>
                             <th>Código</th>
                             <th>Nome</th>
                             <th>Sala</th>
@@ -24,7 +24,7 @@
                     </thead>
                     <tbody>
                         <tr th:each="disciplina : ${disciplinas}">
-                            <td th:text="${disciplina.id}"></td>
+                            <td th:text="${disciplina.id}" sec:authorize="hasAuthority('Admin')"></td>
                             <td th:text="${disciplina.codigo}"></td>
                             <td th:text="${disciplina.nome}"></td>
                             <td th:text="${disciplina.sala}"></td>

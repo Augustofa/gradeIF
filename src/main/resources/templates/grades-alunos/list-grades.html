@@ -9,7 +9,7 @@
             <table class="table table-striped">
             <thead>
                 <tr>
-                <th>ID</th>
+                <th sec:authorize="hasAuthority('Admin')">ID</th>
                 <th>Aluno</th>
                 <th>Período</th>
                 <th>Créditos</th>
@@ -19,7 +19,7 @@
             </thead>
             <tbody>
                 <tr th:each="gradeAluno : ${gradesAlunos}">
-                    <td th:text="${gradeAluno.id}"></td>
+                    <td th:text="${gradeAluno.id}" sec:authorize="hasAuthority('Admin')"></td>
                     <td th:text="${gradeAluno.aluno.nome}"></td>
                     <td th:text="${gradeAluno.periodo}"></td>
                     <td th:text="${gradeAluno.calcCreditos()}"></td>
