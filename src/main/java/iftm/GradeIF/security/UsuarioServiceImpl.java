@@ -1,7 +1,6 @@
-package iftm.GradeIF.impls;
+package iftm.GradeIF.security;
 
 import iftm.GradeIF.models.Usuario;
-import iftm.GradeIF.repositories.AlunoRepository;
 import iftm.GradeIF.repositories.UsuarioRepository;
 import iftm.GradeIF.services.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;

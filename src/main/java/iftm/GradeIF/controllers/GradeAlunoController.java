@@ -1,5 +1,6 @@
 package iftm.GradeIF.controllers;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,8 +59,9 @@ public class GradeAlunoController {
     public String addGradeAluno(@Valid GradeAluno gradeAluno, BindingResult result, Model model) {
         if (result.hasErrors()) {
             System.out.println(result.getAllErrors());
-            return "grades-alunos/add-grade-aluno";
+            return "grades-alunos/add-grade";
         }
+
         Aluno aluno = alunoRepository.findByNome(gradeAluno.getNomeAluno()).getFirst();
         gradeAluno.setAluno(aluno);
 
@@ -110,6 +112,7 @@ public class GradeAlunoController {
             discRestantes.remove(tempDisc);
         }
 
+        model.addAttribute("coresDisciplinas", gradeAluno.getCoresDisciplinas());
         model.addAttribute("discHorarios", discHorarios);
         model.addAttribute("gradeAluno", gradeAluno);
         model.addAttribute("aluno", gradeAluno.getAluno());
@@ -123,7 +126,8 @@ public class GradeAlunoController {
             System.out.println(result.getAllErrors());
             return "grades-alunos/edit-grade";
         }
-        
+
+
         GradeAluno gradeExistente = gradeAlunoRepository.findById(id).get();
 
         List<Disciplina> discRestantes = disciplinaRepository.findAll();
@@ -164,7 +168,10 @@ public class GradeAlunoController {
         }
         gradeExistente.setDisciplinas(listDisciplinas);
         gradeExistente.setConfirmada(false);
-        
+
+        String corDisciplina = gradeAluno.getCorDisciplina();
+        gradeExistente.addCorDisciplina(disciplina.getNome(), corDisciplina);
+
         gradeAlunoRepository.saveAndFlush(gradeExistente);
 
         List<DisciplinaHorario> discHorarios = new ArrayList<>();
@@ -185,13 +192,14 @@ public class GradeAlunoController {
             discRestantes.remove(tempDisc);
         }
 
+        model.addAttribute("coresDisciplinas", gradeExistente.getCoresDisciplinas());
         model.addAttribute("preRequisitos", preReqFaltando);
         model.addAttribute("discHorarios", discHorarios);
         model.addAttribute("gradeAluno", gradeExistente);
         model.addAttribute("aluno", gradeExistente.getAluno());
         model.addAttribute("disciplinas", discRestantes);
 
-        return "grades-alunos/edit-grade";
+        return "redirect:/grades-alunos/editar/" + id;
     }
 
     @PostMapping("/editar/{idGrade}/remove/{idDisciplina}")
@@ -236,7 +244,7 @@ public class GradeAlunoController {
         model.addAttribute("aluno", gradeExistente.getAluno());
         model.addAttribute("disciplinas", discRestantes);
 
-        return "grades-alunos/edit-grade";
+        return "redirect:/grades-alunos/editar/" + idGrade;
     }
 
     @PostMapping("/editar/{idGrade}/confirmar")

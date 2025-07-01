@@ -33,6 +33,11 @@ public class GradePeriodo extends Grade{
         this.cursoPeriodo = curso.getNome() + " - " + periodo;
     }
 
+    @Override
+    public void addCorDisciplina(String nomeDisciplina, String cor) {
+        throw new UnsupportedOperationException();
+    }
+
     public int calcCreditos(){
         return 0;
     }

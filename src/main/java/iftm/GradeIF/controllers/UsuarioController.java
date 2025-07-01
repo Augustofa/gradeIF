@@ -34,7 +34,6 @@ public class UsuarioController {
 
     @PostMapping("/saveUser")
     public String salvaUsuario(@ModelAttribute Usuario usuario, @ModelAttribute("cpf") String cpf, @RequestParam(value = "permissoes") List<String> permissoes, Model model){
-        System.out.println("Permissoes: " + permissoes);
         if(permissoes.contains("Aluno")){
             Aluno aluno = alunoRepository.findByCpf(cpf);
             if(aluno == null){
@@ -44,8 +43,6 @@ public class UsuarioController {
             usuario.setAluno(aluno);
         }
         usuario.setPermissoes(permissoes);
-
-        System.out.println("\n Salvando " + usuario + "\n");
 
         Integer id = usuarioService.saveUser(usuario);
         String msg = "Usuario '" + id + "' cadastrado com sucesso!";

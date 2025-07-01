@@ -1,7 +1,11 @@
 package iftm.GradeIF.models;
 
+import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,6 +14,8 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Data
@@ -44,6 +50,17 @@ public class GradeAluno extends Grade {
         return false;
     }
 
+    @Override
+    public void addCorDisciplina(String nomeDisciplina, String cor) {
+        if(coresDisciplinas == null){
+            coresDisciplinas = new HashMap<>();
+        }
+        System.out.println(coresDisciplinas);
+        coresDisciplinas.put(nomeDisciplina, cor);
+        this.setCoresDisciplinas(coresDisciplinas);
+    }
+
+    @Override
     public int calcCreditos(){
         int somaCreditos = 0;
         for(Disciplina disciplina : disciplinas){

@@ -21,15 +21,15 @@
                 <td th:text="${gradePeriodo.curso.nome}"></td>
                 <td th:text="${gradePeriodo.periodo}"></td>
                 <td>
-                    <a th:href="@{/gradePeriodos/editar/{id}(id=${gradePeriodo.id})}" class="btn btn-primary">Editar</a>
-                    <a th:href="@{/gradePeriodos/deletar/{id}(id=${gradePeriodo.id})}" class="btn btn-danger">Excluir</a>
+                    <a th:href="@{/grades-periodos/editar/{id}(id=${gradePeriodo.id})}" class="btn btn-primary">Editar</a>
+                    <a th:href="@{/grades-periodos/deletar/{id}(id=${gradePeriodo.id})}" class="btn btn-danger">Excluir</a>
                 </td>
                 </tr>
             </tbody>
             </table>
         </div>
         
-        <a th:href="@{/gradePeriodos/criar}" class="btn btn-success">Adicionar Nova Grade</a>
+        <a th:href="@{/grades-periodos/criar}" class="btn btn-success">Adicionar Nova Grade</a>
     </div>
 
 </body>

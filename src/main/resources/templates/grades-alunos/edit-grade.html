@@ -18,6 +18,10 @@
             </select>
             <input type="submit" th:formaction="'/grades-alunos/editar/' + ${gradeAluno.id} + '/add'" value="Adicionar Disciplina" class="btnConfirmar">
         </div>
+        <div>
+            <label for="corDisciplina">Cor da Disciplina: </label>
+            <input type="color" id="corDisciplina" name="corDisciplina" value="#ffffff" title="Escolha uma cor:">
+        </div>
         <div class="table-responsive">
             <br><label for="horarios">Grade Montada:</label>
             <input type="hidden" id="horarios">
@@ -72,28 +76,28 @@
                                 <th>Nome</th>
                                 <th>Sala</th>
                                 <th>Professor</th>
-                                <th>Vagas</th>
+<!--                                <th>Vagas</th>-->
 <!--                                <th>Créditos</th>-->
                                 <th>Pré-Requisitos</th>
-                                <th>Horários</th>
+<!--                                <th>Horários</th>-->
                                 <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="disciplina : ${gradeAluno.disciplinas}" th:id="${disciplina.nome}">
+                            <tr th:each="disciplina : ${gradeAluno.disciplinas}" th:id="${disciplina.nome}" th:style="'background-color:' + ${gradeAluno.coresDisciplinas.get(disciplina.nome)} + ';'">
                                 <td th:text="${disciplina.codigo}"></td>
                                 <td th:text="${disciplina.nome}"></td>
                                 <td th:text="${disciplina.sala}"></td>
                                 <td th:text="${disciplina.professor.nome}"></td>
-                                <td th:text="${disciplina.vagas}"></td>
+<!--                                <td th:text="${disciplina.vagas}"></td>-->
 <!--                                <td th:text="${disciplina.creditos}"></td>-->
                                 <td th:if="${disciplina.preRequisitosNomes != null and !disciplina.preRequisitosNomes.isEmpty()}" th:text="${disciplina.preRequisitosNomes}"></td>
                                 <td th:if="${disciplina.preRequisitosNomes == null or disciplina.preRequisitosNomes.isEmpty()}">Sem pré-requisitos</td>
-                                <td>
-                                    <ul>
-                                        <li th:each="horario : ${disciplina.horarios}" th:text="${horario.combinaDiaHora}"></li>
-                                    </ul>
-                                </td>
+<!--                                <td>-->
+<!--                                    <ul>-->
+<!--                                        <li th:each="horario : ${disciplina.horarios}" th:text="${horario.combinaDiaHora}"></li>-->
+<!--                                    </ul>-->
+<!--                                </td>-->
                                 <td>
                                     <input type="submit" th:formaction="'/grades-alunos/editar/' + ${gradeAluno.id} + '/remove/' + ${disciplina.id}" value="Remover" class="btn btn-danger btn-responsive">
                                 </td>
@@ -110,7 +114,10 @@
         document.addEventListener("DOMContentLoaded", function() {
             var horarios = /*[[${discHorarios}]]*/ [];
             var preRequisitos = /*[[${preRequisitos}]]*/ [];
-            
+            var coresDisciplinas = /*[[${coresDisciplinas}]]*/ {};
+
+            console.log(coresDisciplinas);
+
             var count = horarios.length;
             horarios.forEach(horario => {
                 let codigo = `${horario.nome}`
@@ -136,6 +143,9 @@
                 if(valido){
                     cellList.forEach(cell => {
                         cell.textContent = codigo;
+                        var cor = coresDisciplinas[codigo];
+                        console.log(cor);
+                        cell.style.backgroundColor = cor;
                     })
                 }else{
                     if(preReqOk){
