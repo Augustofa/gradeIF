@@ -116,8 +116,6 @@
             var preRequisitos = /*[[${preRequisitos}]]*/ [];
             var coresDisciplinas = /*[[${coresDisciplinas}]]*/ {};
 
-            console.log(coresDisciplinas);
-
             var count = horarios.length;
             horarios.forEach(horario => {
                 let codigo = `${horario.nome}`
@@ -144,8 +142,9 @@
                     cellList.forEach(cell => {
                         cell.textContent = codigo;
                         var cor = coresDisciplinas[codigo];
-                        console.log(cor);
                         cell.style.backgroundColor = cor;
+                        cell.style.color = calcCorContraste(cor);
+                        document.getElementById(codigo).style.color = calcCorContraste(cor);
                     })
                 }else{
                     if(preReqOk){
