@@ -1,13 +1,10 @@
 package iftm.GradeIF.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PostLoad;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -20,7 +17,6 @@ public class GradePeriodo extends Grade{
     private String nomeCurso;
 
     private int periodo;
-
     @Transient
     private String cursoPeriodo;
 
@@ -31,11 +27,6 @@ public class GradePeriodo extends Grade{
     @PostLoad
     private void onLoad() {
         this.cursoPeriodo = curso.getNome() + " - " + periodo;
-    }
-
-    @Override
-    public void addCorDisciplina(String nomeDisciplina, String cor) {
-        throw new UnsupportedOperationException();
     }
 
     public int calcCreditos(){

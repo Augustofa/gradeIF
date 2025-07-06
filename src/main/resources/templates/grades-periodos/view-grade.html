@@ -12,20 +12,8 @@
     </a>
     <h1 th:text="${gradePeriodo.periodo} + 'º Período de ' + ${gradePeriodo.curso.nome}"></h1>
     <form class="col-lg-12" th:action="'/grades-periodos/editar/' + ${gradePeriodo.id} + '/confirmar'" th:object="${gradePeriodo}" method="post">
-        <div>
-            <label for="idDiscSelecionada">Disciplina:</label>
-            <select id="idDiscSelecionada" name="disciplina" th:field="*{idDiscSelecionada}">
-                <option value=""></option>
-                <option th:each="disciplina : ${disciplinas}" th:value="${disciplina.id}" th:text="${disciplina.nome}" th:name="idDiscSelecionada"></option>
-            </select>
-            <input type="submit" th:formaction="'/grades-periodos/editar/' + ${gradePeriodo.id} + '/add'" value="Adicionar Disciplina" class="btnConfirmar">
-        </div>
-        <div>
-            <label for="corDisciplina">Cor da Disciplina: </label>
-            <input type="text" id="corDisciplina" name="corDisciplina" value="#ffffff" title="Escolha uma cor:">
-        </div>
         <div class="table-responsive">
-            <br><label for="horarios">Grade Montada:</label>
+            <label for="horarios">Grade Montada:</label>
             <input type="hidden" id="horarios">
             <table id="tabelaHorarios" class="table table-bordered w-100" >
                 <thead>
@@ -60,12 +48,8 @@
             <div class="alert alert-danger d-none" role="alert" id="erro-grade">Erro de compatibilidade na grade!</div>
             <div class="alert alert-danger d-none alerta" role="alert" id="erro-pre-requisitos">Pré-requisitos não cumpridos: </div>
         </div>
-        <div>
-            <button type="submit" class="btnConfirmar">Confirmar Grade</button>
-        </div>
 
-
-        <br><br>
+        <br>
         <div class="w-100">
             <h2>Disciplinas adicionadas:</h2>
             <div th:switch="${gradePeriodo.disciplinas}">
@@ -82,7 +66,6 @@
                             <!--                                <th>Créditos</th>-->
                             <th>Pré-Requisitos</th>
                             <!--                                <th>Horários</th>-->
-                            <th>Ações</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -95,9 +78,6 @@
                             <!--                                <td th:text="${disciplina.creditos}"></td>-->
                             <td th:if="${disciplina.preRequisitosNomes != null and !disciplina.preRequisitosNomes.isEmpty()}" th:text="${disciplina.preRequisitosNomes}"></td>
                             <td th:if="${disciplina.preRequisitosNomes == null or disciplina.preRequisitosNomes.isEmpty()}">Sem pré-requisitos</td>
-                            <td>
-                                <input type="submit" th:formaction="'/grades-periodos/editar/' + ${gradePeriodo.id} + '/remove/' + ${disciplina.id}" value="Remover" class="btn btn-danger btn-responsive">
-                            </td>
                         </tr>
                         </tbody>
                     </table>

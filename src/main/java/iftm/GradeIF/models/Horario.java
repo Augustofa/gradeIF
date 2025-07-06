@@ -4,10 +4,7 @@ import java.time.LocalTime;
 import java.util.Map;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity

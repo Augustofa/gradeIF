@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import iftm.GradeIF.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,9 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import iftm.GradeIF.models.Disciplina;
-import iftm.GradeIF.models.Horario;
-import iftm.GradeIF.models.Professor;
 import iftm.GradeIF.repositories.DisciplinaRepository;
 import iftm.GradeIF.repositories.HorarioRepository;
 import iftm.GradeIF.repositories.ProfessorRepository;
@@ -76,7 +74,7 @@ public class DisciplinaController {
             for (String diaHora : disciplina.getHorariosNomes()) {
                 List<Horario> horariosDia = horarioRepository.findByDia(diaHora.split(" ")[0]);
                 for (Horario horario : horariosDia) {
-                    if(horario.getHoraInicio() == LocalTime.parse(diaHora.split(" ")[2])) {
+                    if(horario.getHoraInicio().equals(LocalTime.parse(diaHora.split(" ")[2]))) {
                         horarios.add(horario);
                         break;
                     }
@@ -152,5 +150,18 @@ public class DisciplinaController {
         Disciplina disciplina = disciplinaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("ID inválido: " + id));
         disciplinaRepository.delete(disciplina);
         return "redirect:/disciplinas";
+    }
+
+    public static void getHorariosDisciplinas(List<DisciplinaHorario> discHorarios, List<Disciplina> discRestantes, List<Disciplina> disciplinasGrade) {
+        for (Disciplina tempDisc : disciplinasGrade) {
+            DisciplinaHorario discHorario = new DisciplinaHorario();
+            List<Horario> horarios = new ArrayList<>(tempDisc.getHorarios());
+            discHorario.setHorarios(horarios);
+            discHorario.setCodigo(tempDisc.getCodigo());
+            discHorario.setNome(tempDisc.getNome());
+            discHorarios.add(discHorario);
+
+            discRestantes.remove(tempDisc);
+        }
     }
 }

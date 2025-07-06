@@ -12,4 +12,5 @@ import iftm.GradeIF.models.GradePeriodo;
 public interface GradePeriodoRepository extends JpaRepository<GradePeriodo, Integer>{
     List<GradePeriodo> findByCurso(Curso curso);
     List<GradePeriodo> findByPeriodo(int periodo);
+    List<GradePeriodo> findAllByConfirmada(boolean confirmada);
 }

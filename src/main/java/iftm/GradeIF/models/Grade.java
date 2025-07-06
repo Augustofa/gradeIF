@@ -1,15 +1,15 @@
 package iftm.GradeIF.models;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -23,11 +23,40 @@ public abstract class Grade {
 
     private int tipo;
 
+    @ManyToMany
+    List<Disciplina> disciplinas;
+    @Transient
+    Integer idDiscSelecionada;
+
     @JdbcTypeCode(SqlTypes.JSON)
     protected Map<String, String> coresDisciplinas;
+    @Transient
     private String corDisciplina;
 
-    public abstract void addCorDisciplina(String nomeDisciplina, String cor);
+    public Boolean confirmada = false;
 
-    public abstract int calcCreditos();
+    public Boolean checaDisciplina(int id){
+        for(Disciplina disciplina : disciplinas){
+            if(disciplina.getId() == id){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addCorDisciplina(String nomeDisciplina, String cor) {
+        if(coresDisciplinas == null){
+            coresDisciplinas = new HashMap<>();
+        }
+        coresDisciplinas.put(nomeDisciplina, cor);
+        this.setCoresDisciplinas(coresDisciplinas);
+    }
+
+    public int calcCreditos(){
+        int somaCreditos = 0;
+        for(Disciplina disciplina : disciplinas){
+            somaCreditos += disciplina.getCreditos();
+        }
+        return somaCreditos;
+    }
 }

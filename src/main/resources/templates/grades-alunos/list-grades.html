@@ -25,6 +25,7 @@
                     <td th:text="${gradeAluno.calcCreditos()}"></td>
                     <td th:text="${gradeAluno.confirmada ? 'Confirmada' : 'Em Progresso'}" th:class="${gradeAluno.confirmada ? 'confirmado' : 'em-progresso'}"></td>
                     <td>
+                        <a th:href="@{/grades-alunos/visualizar/{id}(id=${gradeAluno.id})}" class="btn btn-info">Visualizar</a>
                         <a th:href="@{/grades-alunos/editar/{id}(id=${gradeAluno.id})}" class="btn btn-primary">Editar</a>
                         <a th:href="@{/grades-alunos/deletar/{id}(id=${gradeAluno.id})}" class="btn btn-danger" sec:authorize="hasAuthority('Admin')">Excluir</a>
                     </td>
@@ -33,8 +34,6 @@
             </table>
         </div>
 
-
-        
         <a th:href="@{/grades-alunos/criar}" class="btn btn-success" sec:authorize="hasAuthority('Admin')">Adicionar Nova Grade</a>
     </div>
 </body>

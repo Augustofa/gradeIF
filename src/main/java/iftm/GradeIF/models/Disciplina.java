@@ -3,15 +3,7 @@ package iftm.GradeIF.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -30,19 +22,25 @@ public class Disciplina {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "professor_id", referencedColumnName = "id")
     private Professor professor;
+    @Transient
     private String nomeProfessor;
     
     private int vagas;
 
     private int creditos;
+
+    @Transient
+    private int periodo = 99;
     
     @ManyToMany(fetch = FetchType.LAZY)
     // @Convert(converter = DisciplinaConverter.class)
     private List<Disciplina> preRequisitos;
+    @Transient
     private List<String> preRequisitosNomes;
     
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<Horario> horarios;
+    @Transient
     private List<String> horariosNomes;
 
     public Disciplina(){
@@ -50,7 +48,6 @@ public class Disciplina {
         preRequisitosNomes = new ArrayList<>();
         horarios = new ArrayList<>();
         horariosNomes = new ArrayList<>();
-
     }
 
     public Boolean subtraiVaga(){
