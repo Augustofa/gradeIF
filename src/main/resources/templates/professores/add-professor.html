@@ -12,7 +12,7 @@
         </div>
         <div>
             <label for="cpf">cpf:</label>
-            <input type="text" th:field="*{cpf}" id="cpf" placeholder="000.000.000-00">
+            <input type="tel" th:field="*{cpf}" id="cpf" placeholder="000.000.000-00">
             <span th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}" class="text-danger"></span>
         </div>
         <div>

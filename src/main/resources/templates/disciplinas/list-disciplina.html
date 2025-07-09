@@ -7,7 +7,7 @@
         <div th:switch="${disciplinas}">
             <h2 th:case="null">Sem disciplinas cadastradas</h2>
             <div th:case="*">
-                <table class="table table-responsive table-striped">
+                <table class="table table-striped table-responsive">
                     <thead>
                         <tr>
                             <th sec:authorize="hasAuthority('Admin')">ID</th>
@@ -31,10 +31,14 @@
                             <td th:text="${disciplina.professor.nome}"></td>
                             <td th:text="${disciplina.vagas}"></td>
                             <td th:text="${disciplina.creditos}"></td>
-                            <td th:if="${disciplina.preRequisitosNomes != null and !disciplina.preRequisitosNomes.isEmpty()}" th:text="${disciplina.preRequisitosNomes}"></td>
-                            <td th:if="${disciplina.preRequisitosNomes == null or disciplina.preRequisitosNomes.isEmpty()}">Sem pré-requisitos</td>
+                            <td th:if="${disciplina.preRequisitos != null and !disciplina.preRequisitos.isEmpty()}">
+                                <ul style="list-style-position: inside; padding-left: 0;">
+                                    <li th:each="preRequisito : ${disciplina.preRequisitos}" th:text="${preRequisito.nome}"></li>
+                                </ul>
+                            </td>
+                            <td th:unless="${disciplina.preRequisitos != null and !disciplina.preRequisitos.isEmpty()}">Sem pré-requisitos</td>
                             <td>
-                                <ul>
+                                <ul style="list-style-position: inside; padding-left: 0;">
                                     <li th:each="horario : ${disciplina.horarios}" th:text="${horario.combinaDiaHora}"></li>
                                 </ul>
                             </td>

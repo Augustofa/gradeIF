@@ -6,6 +6,8 @@ import java.util.List;
 
 import iftm.GradeIF.models.*;
 import iftm.GradeIF.repositories.*;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @Controller
+@DependsOn("gradePeriodoController")
 @RequestMapping("/grades-alunos")
 public class GradeAlunoController {
     private final GradeAlunoRepository gradeAlunoRepository;
@@ -42,9 +45,9 @@ public class GradeAlunoController {
     public String listaGradeAlunos(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         Usuario usuario = usuarioRepository.findByLogin(userDetails.getUsername()).get();
         if(usuario.getAluno() == null){
-            model.addAttribute("gradesAlunos", gradeAlunoRepository.findAll());
+            model.addAttribute("gradesAlunos", gradeAlunoRepository.findAll(Sort.by("periodo").descending()));
         }else{
-            List<GradeAluno> gradesAluno = gradeAlunoRepository.findByAluno(usuario.getAluno());
+            List<GradeAluno> gradesAluno = gradeAlunoRepository.findByAluno(usuario.getAluno(), Sort.by("periodo").descending());
             model.addAttribute("gradesAlunos", gradesAluno);
         }
 
@@ -67,13 +70,10 @@ public class GradeAlunoController {
         Aluno aluno = alunoRepository.findByNome(gradeAluno.getNomeAluno()).getFirst();
         gradeAluno.setAluno(aluno);
 
-        String periodoAtual = "2025.1";
-        gradeAluno.setPeriodo(periodoAtual);
-
         List<GradeAluno> gradesExistentes = gradeAlunoRepository.findByAluno(aluno);
         boolean jaExiste = false;
         for(GradeAluno tempGrade : gradesExistentes){
-            if(tempGrade.getPeriodo().equals(periodoAtual)){
+            if(tempGrade.getPeriodo().equals(gradeAluno.getPeriodo())){
                 jaExiste = true;
             }
         }
@@ -113,17 +113,19 @@ public class GradeAlunoController {
         public String formularioEditarGradeAluno(@PathVariable("id") int id, Model model) {
         GradeAluno gradeAluno = gradeAlunoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("ID inválido: " + id));
         List<DisciplinaHorario> discHorarios = new ArrayList<>();
-        List<Disciplina> discRestantes = disciplinaRepository.findAll();
 
-        DisciplinaController.getHorariosDisciplinas(discHorarios, discRestantes, gradeAluno.getDisciplinas());
+        List<Disciplina> disciplinasDisponiveis = disciplinaRepository.findAll();
+        List<Disciplina> disciplinasCursadas = getDisciplinasPassadas(gradeAluno.getAluno());
+        disciplinasDisponiveis.removeAll(disciplinasCursadas);
 
-        gradePeriodoController.getPeriodosDisciplinas(discRestantes, gradeAluno.getAluno().getCurso());
+        DisciplinaController.getHorariosDisciplinas(discHorarios, disciplinasDisponiveis, gradeAluno.getDisciplinas());
+        gradePeriodoController.getPeriodosDisciplinas(disciplinasDisponiveis, gradeAluno.getAluno().getCurso());
 
         model.addAttribute("coresDisciplinas", gradeAluno.getCoresDisciplinas());
         model.addAttribute("discHorarios", discHorarios);
         model.addAttribute("gradeAluno", gradeAluno);
         model.addAttribute("aluno", gradeAluno.getAluno());
-        model.addAttribute("disciplinas", discRestantes);
+        model.addAttribute("disciplinas", disciplinasDisponiveis);
         return "grades-alunos/edit-grade";
     }
 
@@ -135,58 +137,38 @@ public class GradeAlunoController {
         }
 
         GradeAluno gradeExistente = gradeAlunoRepository.findById(id).get();
-
-        List<Disciplina> discRestantes = disciplinaRepository.findAll();
-
-        Disciplina disciplina = disciplinaRepository.findById(gradeAluno.getIdDiscSelecionada()).get();
-        List<Disciplina> preRequisitos = disciplina.getPreRequisitos();
-
         Aluno aluno = alunoRepository.findById(gradeExistente.getAluno().getId()).get();
 
-        List<GradeAluno> gradesPassadasAluno = gradeAlunoRepository.findByAluno(aluno);
+        List<Disciplina> disciplinasDisponiveis = disciplinaRepository.findAll();
+        List<Disciplina> disciplinasCursadas = getDisciplinasPassadas(aluno);
+        disciplinasDisponiveis.removeAll(disciplinasCursadas);
+
+        Disciplina disciplinaAdicionada = disciplinaRepository.findById(gradeAluno.getIdDiscSelecionada()).get();
+        List<Disciplina> preRequisitos = disciplinaAdicionada.getPreRequisitos();
 
         String preReqFaltando = "";
-        for(Disciplina preRequisito : preRequisitos){
-            Boolean encontrado = false;
-            for(GradeAluno grade : gradesPassadasAluno){
-                if(grade.checaDisciplina(preRequisito.getId()) && grade.getConfirmada()){
-                    encontrado = true;
-                }
-            }
-            if(!encontrado){
-                if(!preReqFaltando.isEmpty()){
-                    preReqFaltando += ", ";
-                }
+        for(Disciplina preRequisito : preRequisitos) {
+            if(!disciplinasCursadas.contains(preRequisito)) {
                 preReqFaltando += preRequisito.getNome();
             }
         }
 
-        List<Disciplina> listDisciplinas = gradeExistente.getDisciplinas();
-        Boolean repetida = false;
-        for (Disciplina tempDisc : listDisciplinas) {
-            if(tempDisc.getId() == disciplina.getId()){
-                repetida = true;
-            }
-        }
+        Boolean repetida = gradeExistente.getDisciplinas().contains(disciplinaAdicionada);
         if(!repetida && preReqFaltando.isEmpty()){
-            disciplina.subtraiVaga();
-            listDisciplinas.add(disciplina);
+            gradeExistente.getDisciplinas().add(disciplinaAdicionada);
         }
-        gradeExistente.setDisciplinas(listDisciplinas);
+
         gradeExistente.setConfirmada(false);
 
         String corDisciplina = gradeAluno.getCorDisciplina();
-        gradeExistente.addCorDisciplina(disciplina.getNome(), corDisciplina);
+        gradeExistente.addCorDisciplina(disciplinaAdicionada.getNome(), corDisciplina);
 
         gradeAlunoRepository.saveAndFlush(gradeExistente);
 
         List<DisciplinaHorario> discHorarios = new ArrayList<>();
         for (Disciplina tempDisc : gradeExistente.getDisciplinas()) {
             DisciplinaHorario discHorario = new DisciplinaHorario();
-            List<Horario> horarios = new ArrayList<>();
-            for(Horario tempHorario : tempDisc.getHorarios()){
-                horarios.add(tempHorario);
-            }
+            List<Horario> horarios = new ArrayList<>(tempDisc.getHorarios());
             discHorario.setCodigo(tempDisc.getCodigo());
             discHorario.setNome(tempDisc.getNome());
             discHorario.setHorarios(horarios);
@@ -195,17 +177,17 @@ public class GradeAlunoController {
                 discHorario.setPreReqCumpridos(false);
             }
 
-            discRestantes.remove(tempDisc);
+            disciplinasDisponiveis.remove(tempDisc);
         }
 
-        gradePeriodoController.getPeriodosDisciplinas(discRestantes, aluno.getCurso());
+        gradePeriodoController.getPeriodosDisciplinas(disciplinasDisponiveis, aluno.getCurso());
 
         model.addAttribute("coresDisciplinas", gradeExistente.getCoresDisciplinas());
         model.addAttribute("preRequisitos", preReqFaltando);
         model.addAttribute("discHorarios", discHorarios);
         model.addAttribute("gradeAluno", gradeExistente);
         model.addAttribute("aluno", gradeExistente.getAluno());
-        model.addAttribute("disciplinas", discRestantes);
+        model.addAttribute("disciplinas", disciplinasDisponiveis);
 
         return "grades-alunos/edit-grade";
     }
@@ -245,11 +227,8 @@ public class GradeAlunoController {
         gradeExistente.setConfirmada(false);
 
         //TODO: Adicionar cores contidas na GradePeriodo
-//        String corDisciplina = gradeAluno.getCorDisciplina();
-//        gradeExistente.addCorDisciplina(disciplina.getNome(), corDisciplina);
-        for(Disciplina disc : disciplinasAdicionadas){
-            gradeExistente.addCorDisciplina(disc.getNome(), "#ffffff");
-        }
+        gradeExistente.setCoresDisciplinas(gradePeriodoController.getDisciplinasCoresByCurso(aluno.getCurso()));
+        var teste = gradeExistente.getCoresDisciplinas();
 
         gradeAlunoRepository.saveAndFlush(gradeExistente);
 
@@ -293,7 +272,8 @@ public class GradeAlunoController {
         discRemovida.revogaVaga();
         
         gradeExistente.setDisciplinas(listDisciplinas);
-        
+        gradeExistente.setConfirmada(false);
+
         gradeAlunoRepository.saveAndFlush(gradeExistente);
 
         List<DisciplinaHorario> discHorarios = new ArrayList<>();

@@ -10,10 +10,9 @@
     <a th:href="@{/grades-alunos}" class="btn btn-outline-primary my-2">
         <i class="bi bi-chevron-left align-top"></i> Voltar
     </a>
-    <h1 th:text="'Grade de ' + ${aluno.nome}"></h1>
+    <h1 class="h1Responsivo" th:text="'Grade de ' + ${aluno.nome}"></h1>
     <form class="col-lg-12" th:action="'/grades-alunos/editar/' + ${gradeAluno.id} + '/confirmar'" th:object="${gradeAluno}" method="post">
         <div class="table-responsive">
-            <label for="horarios">Grade Montada:</label>
             <input type="hidden" id="horarios">
             <table id="tabelaHorarios" class="table table-bordered w-100" >
                 <thead>
@@ -51,7 +50,7 @@
 
         <br>
         <div class="w-100">
-            <h2>Disciplinas adicionadas:</h2>
+            <h2 class="h2Responsivo">Disciplinas adicionadas:</h2>
             <div th:switch="${gradeAluno.disciplinas}">
                 <h2 th:case="null">Sem disciplinas cadastradas</h2>
                 <div th:case="*" class="table-responsive">

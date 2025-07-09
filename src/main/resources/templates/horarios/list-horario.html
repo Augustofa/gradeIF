@@ -7,14 +7,14 @@
         <div th:switch="${horarios}">
             <h2 th:case="null">Sem horários cadastrados</h2>
             <div th:case="*">
-                <table class="table table-striped">
+                <table class="table table-striped table-responsive">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Dia</th>
                             <th>Hora Início</th>
                             <th>Hora Fim</th>
-                            <th>Combina Dia Hora</th>
+<!--                            <th>Combina Dia Hora</th>-->
                             <th sec:authorize="hasAuthority('Admin')">Ações</th>
                         </tr>
                     </thead>
@@ -24,7 +24,7 @@
                             <td th:text="${horario.dia}"></td>
                             <td th:text="${horario.horaInicio}"></td>
                             <td th:text="${horario.horaFim}"></td>
-                            <td th:text="${horario.combinaDiaHora}"></td>
+<!--                            <td th:text="${horario.combinaDiaHora}"></td>-->
                             <td>
                                 <a th:href="@{/horarios/deletar/{id}(id=${horario.id})}" class="btn btn-danger" sec:authorize="hasAuthority('Admin')">Excluir</a>
                             </td>

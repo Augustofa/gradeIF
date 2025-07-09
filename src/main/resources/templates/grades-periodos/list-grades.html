@@ -6,7 +6,7 @@
     <div th:switch="${gradePeriodos}">
         <h2 th:case="null">Sem grades cadastradas</h2>
         <div th:case="*">
-            <table class="table table-striped">
+            <table class="table table-striped table-responsive">
             <thead>
                 <tr>
                 <th sec:authorize="hasAuthority('Admin')">ID</th>

@@ -10,7 +10,7 @@
     <a th:href="@{/grades-periodos}" class="btn btn-outline-primary my-2">
         <i class="bi bi-chevron-left align-top"></i> Voltar
     </a>
-    <h1 th:text="${gradePeriodo.periodo} + 'º Período de ' + ${gradePeriodo.curso.nome}"></h1>
+    <h1 class="h1Responsivo" th:text="${gradePeriodo.periodo} + 'º Período de ' + ${gradePeriodo.curso.nome}"></h1>
     <form class="col-lg-12" th:action="'/grades-periodos/editar/' + ${gradePeriodo.id} + '/confirmar'" th:object="${gradePeriodo}" method="post">
         <div>
             <label for="idDiscSelecionada">Disciplina:</label>
@@ -25,7 +25,6 @@
             <input type="text" id="corDisciplina" name="corDisciplina" value="#ffffff" title="Escolha uma cor:">
         </div>
         <div class="table-responsive">
-            <br><label for="horarios">Grade Montada:</label>
             <input type="hidden" id="horarios">
             <table id="tabelaHorarios" class="table table-bordered w-100" >
                 <thead>
@@ -64,10 +63,10 @@
             <button type="submit" class="btnConfirmar">Confirmar Grade</button>
         </div>
 
+        <br>
 
-        <br><br>
         <div class="w-100">
-            <h2>Disciplinas adicionadas:</h2>
+            <h2 class="h2Responsivo">Disciplinas adicionadas:</h2>
             <div th:switch="${gradePeriodo.disciplinas}">
                 <h2 th:case="null">Sem disciplinas cadastradas</h2>
                 <div th:case="*" class="table-responsive">
@@ -93,8 +92,12 @@
                             <td th:text="${disciplina.professor.nome}"></td>
                             <!--                                <td th:text="${disciplina.vagas}"></td>-->
                             <!--                                <td th:text="${disciplina.creditos}"></td>-->
-                            <td th:if="${disciplina.preRequisitosNomes != null and !disciplina.preRequisitosNomes.isEmpty()}" th:text="${disciplina.preRequisitosNomes}"></td>
-                            <td th:if="${disciplina.preRequisitosNomes == null or disciplina.preRequisitosNomes.isEmpty()}">Sem pré-requisitos</td>
+                            <td th:if="${disciplina.preRequisitos != null and !disciplina.preRequisitos.isEmpty()}">
+                                <ul style="list-style-position: inside; padding-left: 0;">
+                                    <li th:each="preRequisito : ${disciplina.preRequisitos}" th:text="${preRequisito.nome}"></li>
+                                </ul>
+                            </td>
+                            <td th:unless="${disciplina.preRequisitos != null and !disciplina.preRequisitos.isEmpty()}">Sem pré-requisitos</td>
                             <td>
                                 <input type="submit" th:formaction="'/grades-periodos/editar/' + ${gradePeriodo.id} + '/remove/' + ${disciplina.id}" value="Remover" class="btn btn-danger btn-responsive">
                             </td>

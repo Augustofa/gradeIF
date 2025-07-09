@@ -47,7 +47,7 @@ public class UsuarioController {
         Integer id = usuarioService.saveUser(usuario);
         String msg = "Usuario '" + id + "' cadastrado com sucesso!";
         model.addAttribute("msg", msg);
-        return "usuarios/registerUser";
+        return "redirect:/usuarios/loginUser";
     }
 
     @GetMapping("/accessDenied")

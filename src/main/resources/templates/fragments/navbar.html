@@ -32,8 +32,9 @@
         </nav>
 
         <div id="sidebar" class="bg-dark">
-            <a th:href="@{/grades-alunos}">Grades Horárias</a>
-            <a th:href="@{/grades-periodos}">PPCs</a>
+            <a th:href="@{/grades-alunos}" sec:authorize="hasAuthority('Admin')">Grades Horárias</a>
+            <a th:href="@{/grades-alunos}" sec:authorize="hasAuthority('Aluno')">Meus Horários</a>
+            <a th:href="@{/grades-periodos}" sec:authorize="hasAuthority('Admin')">Grades Períodos</a>
             <a th:href="@{/disciplinas}">Disciplinas</a>
             <a th:href="@{/alunos}" sec:authorize="hasAuthority('Admin')">Alunos</a>
             <a th:href="@{/cursos}">Cursos</a>

@@ -35,14 +35,27 @@ public class GradePeriodoController {
     public String listaGradePeriodos(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         List<GradePeriodo> grades;
         if(userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Admin"))){
-            grades = gradePeriodoRepository.findAll(Sort.by("curso"));
+            grades = gradePeriodoRepository.findAll(Sort.by("curso", "periodo"));
         }else{
-            grades = gradePeriodoRepository.findAllByConfirmada(true);
+
+            grades = gradePeriodoRepository.findAllByConfirmada(true, Sort.by("curso", "periodo"));
+            grades.sort(Comparator.comparing(GradePeriodo::getNomeCurso));
         }
-        grades.sort(Comparator.comparing(GradePeriodo::getNomeCurso));
         model.addAttribute("gradePeriodos", grades);
         
         return "grades-periodos/list-grades";
+    }
+
+    @GetMapping("/curso/{idCurso}")
+    public String listaPpcCurso(Model model, @PathVariable int idCurso) {
+        Curso curso = cursoRepository.findById(idCurso).get();
+
+        List<GradePeriodo> grades = gradePeriodoRepository.findByCurso(curso, Sort.by("periodo"));
+        Map<String, String> coresDisciplinas = getDisciplinasCoresByCurso(curso);
+
+        model.addAttribute("gradePeriodos", grades);
+        model.addAttribute("coresDisciplinas", coresDisciplinas);
+        return "grades-periodos/list-grades-curso";
     }
 
     @GetMapping("/criar")
@@ -116,7 +129,7 @@ public class GradePeriodoController {
 
         Curso curso = cursoRepository.findById(gradeExistente.getCurso().getId()).get();
 
-        List<Disciplina> disciplinasPassadas = getDisciplinasPassadas(curso);
+        List<Disciplina> disciplinasPassadas = getDisciplinasCurso(curso);
         discRestantes.removeAll(disciplinasPassadas);
 
         String preReqFaltando = "";
@@ -258,13 +271,13 @@ public class GradePeriodoController {
         return "redirect:/grades-periodos";
     }
 
-    private List<Disciplina> getDisciplinasPassadas(Curso curso){
+    private List<Disciplina> getDisciplinasCurso(Curso curso){
         List<GradePeriodo> gradesAnterioresCurso = gradePeriodoRepository.findByCurso(curso);
-        List<Disciplina> disciplinasCursadas = new ArrayList<>();
+        List<Disciplina> disciplinasPresentes = new ArrayList<>();
         for(GradePeriodo gradeAnterior : gradesAnterioresCurso){
-            disciplinasCursadas.addAll(gradeAnterior.getDisciplinas());
+            disciplinasPresentes.addAll(gradeAnterior.getDisciplinas());
         }
-        return disciplinasCursadas;
+        return disciplinasPresentes;
     }
 
     public void getPeriodosDisciplinas(List<Disciplina> disciplinas, Curso curso){
@@ -275,5 +288,14 @@ public class GradePeriodoController {
             }
         }
         disciplinas.sort(Comparator.comparing(Disciplina::getPeriodo));
+    }
+
+    public Map<String, String> getDisciplinasCoresByCurso(Curso curso){
+        List<GradePeriodo> gradesCurso = gradePeriodoRepository.findByCurso(curso);
+        Map<String, String> disciplinasCores = new HashMap<>();
+        for(GradePeriodo grade : gradesCurso){
+            disciplinasCores.putAll(grade.getCoresDisciplinas());
+        }
+        return disciplinasCores;
     }
 }

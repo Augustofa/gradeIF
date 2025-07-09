@@ -12,6 +12,10 @@
             <option th:each="aluno : ${alunos}" th:value="${aluno.nome}" th:text="${aluno.nome}"></option>
             </select>
         </div>
+        <div>
+            <label for="periodo">Periodo:</label>
+            <input type="text" th:field="*{periodo}" id="periodo" placeholder="Periodo">
+        </div>
 
         <div>
             <button type="submit">Adicionar Grade</button>

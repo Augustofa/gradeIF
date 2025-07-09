@@ -21,12 +21,6 @@
                 <input type="password" id="senha" name="senha" class="form-control" required/>
             </div>
 
-            <!-- Conditional CPF Field -->
-            <div id="cpfField" class="mb-3">
-                <label for="cpf" class="form-label">CPF Aluno:</label>
-                <input type="text" id="cpf" name="cpf" class="form-control" placeholder="000.000.000-00"/>
-            </div>
-
             <div class="mb-3">
                 <label class="form-label">Permissões:</label>
                 <div class="form-check">
@@ -37,6 +31,11 @@
                     <input type="checkbox" id="permissaoAdmin" name="permissoes" value="Admin" class="form-check-input"/>
                     <label for="permissaoAdmin" class="form-check-label">Admin</label>
                 </div>
+            </div>
+
+            <div id="cpfField" class="mb-3">
+                <label for="cpf" class="form-label">CPF Aluno:</label>
+                <input type="tel" id="cpf" name="cpf" class="form-control" placeholder="000.000.000-00"/>
             </div>
 
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
