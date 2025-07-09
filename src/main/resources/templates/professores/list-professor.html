@@ -21,7 +21,7 @@
                             <td th:text="${professor.id}"></td>
                             <td th:text="${professor.nome}"></td>
                             <td th:text="${professor.cpf}"></td>
-                            <td>
+                            <td class="td-actions">
                                 <a th:href="@{/professores/deletar/{id}(id=${professor.id})}" class="btn btn-danger">Excluir</a>
                             </td>
                         </tr>

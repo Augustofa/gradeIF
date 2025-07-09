@@ -55,3 +55,27 @@ document.addEventListener('click', function(event) {
         sidebar.classList.remove("active");
     }
 });
+
+
+// Adiciona espaçamento entre botões nas tabelas em caso de wrap
+function updateButtonSpacing() {
+    document.querySelectorAll('.td-actions').forEach(td => {
+        const buttons = Array.from(td.querySelectorAll('.btn'));
+        if (buttons.length < 2) return;
+
+        const firstTop = buttons[0].getBoundingClientRect().top;
+        let wrapped = false;
+        for (let i = 1; i < buttons.length; i++) {
+            if (buttons[i].getBoundingClientRect().top > firstTop + 1) {
+                wrapped = true;
+                break;
+            }
+        }
+
+        buttons.forEach((btn, idx) => {
+            btn.style.marginBottom = (wrapped && idx < buttons.length - 1) ? '0.3rem' : '';
+        });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', updateButtonSpacing);

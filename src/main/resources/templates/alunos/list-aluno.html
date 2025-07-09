@@ -25,7 +25,7 @@
                             <td th:text="${aluno.cpf}"></td>
                             <td th:text="${aluno.curso.nome}"></td>
                             <td th:text="${aluno.semestreIngresso}"></td>
-                            <td>
+                            <td class="td-actions">
                                 <a th:href="@{/alunos/editar/{id}(id=${aluno.id})}" class="btn btn-primary">Editar</a>
                                 <a th:href="@{/alunos/deletar/{id}(id=${aluno.id})}" class="btn btn-danger" sec:authorize="hasAuthority('Admin')">Excluir</a>
                             </td>

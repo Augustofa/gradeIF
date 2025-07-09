@@ -25,7 +25,7 @@
                             <td th:text="${horario.horaInicio}"></td>
                             <td th:text="${horario.horaFim}"></td>
 <!--                            <td th:text="${horario.combinaDiaHora}"></td>-->
-                            <td>
+                            <td class="td-actions">
                                 <a th:href="@{/horarios/deletar/{id}(id=${horario.id})}" class="btn btn-danger" sec:authorize="hasAuthority('Admin')">Excluir</a>
                             </td>
                         </tr>

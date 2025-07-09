@@ -24,7 +24,7 @@
                     <td th:text="${gradeAluno.periodo}"></td>
                     <td th:text="${gradeAluno.calcCreditos()}"></td>
                     <td th:text="${gradeAluno.confirmada ? 'Confirmada' : 'Em Progresso'}" th:class="${gradeAluno.confirmada ? 'confirmado' : 'em-progresso'}"></td>
-                    <td>
+                    <td class="td-actions">
                         <a th:href="@{/grades-alunos/visualizar/{id}(id=${gradeAluno.id})}" class="btn btn-info">Visualizar</a>
                         <a th:href="@{/grades-alunos/editar/{id}(id=${gradeAluno.id})}" class="btn btn-primary" th:if="${not gradeAluno.confirmada || #authorization.expr('hasAuthority(''Admin'')')}">Editar</a>
                         <a th:href="@{/grades-alunos/deletar/{id}(id=${gradeAluno.id})}" class="btn btn-danger" sec:authorize="hasAuthority('Admin')">Excluir</a>

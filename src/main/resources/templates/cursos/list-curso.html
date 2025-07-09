@@ -23,7 +23,8 @@
                             <td th:text="${curso.nome}"></td>
                             <td th:text="${curso.descricao}"></td>
                             <td th:text="${curso.quantSemestres}"></td>
-                            <td>
+                            <td class="td-actions">
+                                <a th:href="@{/grades-periodos/curso/{id}(id=${curso.id})}" class="btn btn-info">PPC</a>
                                 <a th:href="@{/cursos/deletar/{id}(id=${curso.id})}" class="btn btn-danger" sec:authorize="hasAuthority('Admin')">Excluir</a>
                             </td>
                         </tr>

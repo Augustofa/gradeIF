@@ -42,7 +42,7 @@
                                     <li th:each="horario : ${disciplina.horarios}" th:text="${horario.combinaDiaHora}"></li>
                                 </ul>
                             </td>
-                            <td>
+                            <td class="td-actions">
                                 <a th:href="@{/disciplinas/deletar/{id}(id=${disciplina.id})}" class="btn btn-danger" sec:authorize="hasAuthority('Admin')">Excluir</a>
                             </td>
                         </tr>

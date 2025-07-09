@@ -51,9 +51,16 @@ public class GradePeriodoController {
         Curso curso = cursoRepository.findById(idCurso).get();
 
         List<GradePeriodo> grades = gradePeriodoRepository.findByCurso(curso, Sort.by("periodo"));
+        List<String> nomesDisciplinas = new ArrayList<>();
+        for(GradePeriodo grade : grades){
+            for(Disciplina disciplina : grade.getDisciplinas()){
+                nomesDisciplinas.add(disciplina.getNome());
+            }
+        }
         Map<String, String> coresDisciplinas = getDisciplinasCoresByCurso(curso);
 
         model.addAttribute("gradePeriodos", grades);
+        model.addAttribute("disciplinas", nomesDisciplinas);
         model.addAttribute("coresDisciplinas", coresDisciplinas);
         return "grades-periodos/list-grades-curso";
     }
