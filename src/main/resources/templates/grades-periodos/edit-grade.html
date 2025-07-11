@@ -10,19 +10,24 @@
     <a th:href="@{/grades-periodos}" class="btn btn-outline-primary my-2">
         <i class="bi bi-chevron-left align-top"></i> Voltar
     </a>
-    <h1 class="h1Responsivo" th:text="${gradePeriodo.periodo} + 'º Período de ' + ${gradePeriodo.curso.nome}"></h1>
+    <h1 class="h1-responsivo" th:text="${gradePeriodo.periodo} + 'º Período de ' + ${gradePeriodo.curso.nome}"></h1>
     <form class="col-lg-12" th:action="'/grades-periodos/editar/' + ${gradePeriodo.id} + '/confirmar'" th:object="${gradePeriodo}" method="post">
-        <div>
-            <label for="idDiscSelecionada">Disciplina:</label>
-            <select id="idDiscSelecionada" name="disciplina" th:field="*{idDiscSelecionada}">
-                <option value=""></option>
-                <option th:each="disciplina : ${disciplinas}" th:value="${disciplina.id}" th:text="${disciplina.nome}" th:name="idDiscSelecionada"></option>
-            </select>
-            <input type="submit" th:formaction="'/grades-periodos/editar/' + ${gradePeriodo.id} + '/add'" value="Adicionar Disciplina" class="btnConfirmar">
-        </div>
-        <div>
-            <label for="corDisciplina">Cor da Disciplina: </label>
-            <input type="text" id="corDisciplina" name="corDisciplina" value="#ffffff" title="Escolha uma cor:">
+        <div class="ml-3 mb-3">
+            <div class="mb-1 form-row align-items-center">
+                <label for="idDiscSelecionada" class="mobile-hidden mr-1 mb-0">Disciplina:</label>
+                <select id="idDiscSelecionada" name="idDiscSelecionada" class="form-control mr-2 w-auto">
+                    <option selected disabled value="">Selecione uma disciplina</option>
+                    <option th:each="disciplina : ${disciplinas}" th:value="${disciplina.id}" th:text="${disciplina.nome + ' (' + (disciplina.periodo == 99 ? 'Optativa' : disciplina.periodo + 'º') + ')'}" th:name="idDiscSelecionada"></option>
+                </select>
+                <input type="submit" th:formaction="'/grades-periodos/editar/' + ${gradePeriodo.id} + '/add'" value="Adicionar" class="btn-adicionar btn btn-primary py-1">
+            </div>
+            <div class="form-row">
+                <label for="corDisciplina" class="mb-0 mr-1">Cor da Disciplina: </label>
+                <input type="text" id="corDisciplina" name="corDisciplina" value="#ffffff" title="Escolha uma cor:">
+            </div>
+            <div th:if="${discHorarios.isEmpty()}" class="form-row mt-3">
+                <input type="submit" th:formaction="'/grades-periodos/editar/' + ${gradePeriodo.id} + '/auto'" value="Montagem Automática" class="btnConfirmar btn btn-sm btn-info">
+            </div>
         </div>
         <div class="table-responsive">
             <input type="hidden" id="horarios">
@@ -60,7 +65,7 @@
             <div class="alert alert-danger d-none alerta" role="alert" id="erro-pre-requisitos">Pré-requisitos não cumpridos: </div>
         </div>
         <div>
-            <button type="submit" class="btnConfirmar">Confirmar Grade</button>
+            <button type="submit" class="btnConfirmar btn btn-success">Confirmar Grade</button>
         </div>
 
         <br>
@@ -169,7 +174,7 @@
                     })
                     const errorMessage = document.getElementById('erro-grade');
                     errorMessage.classList.remove('d-none');
-                    let botoes = document.querySelectorAll('.btnConfirmar');
+                    let botoes = document.querySelectorAll('.btn-adicionar');
                     botoes.forEach(botao => {
                         botao.disabled = true;
                     });

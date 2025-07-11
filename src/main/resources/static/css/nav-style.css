@@ -2,6 +2,7 @@ body {
     scroll-padding-top: 50px;
     overflow-x: hidden;
     position: relative;
+    font-family: sans-serif;
 }
 #content{
     margin-top: 50px;

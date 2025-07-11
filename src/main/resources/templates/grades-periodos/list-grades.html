@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="~{fragments/navbar.html :: header}">
 <body>
     <div th:insert="~{fragments/navbar.html :: navbar}"></div>
+    <div th:replace="~{fragments/page-header :: pageHeader('Grades de Períodos', null)}"></div>
     <div th:switch="${gradePeriodos}">
         <h2 th:case="null">Sem grades cadastradas</h2>
-        <div th:case="*">
-            <table class="table table-striped table-responsive">
+        <div th:case="*" class="table-responsive">
+            <table class="table table-striped">
             <thead>
                 <tr>
                 <th sec:authorize="hasAuthority('Admin')">ID</th>
@@ -21,14 +22,12 @@
                     <td th:text="${gradePeriodo.id}" sec:authorize="hasAuthority('Admin')"></td>
                     <td th:text="${gradePeriodo.curso.nome}"></td>
                     <td th:text="${gradePeriodo.periodo}"></td>
-                    <div class="form-group" >
                     <td th:text="${gradePeriodo.confirmada ? 'Confirmada' : 'Em Progresso'}" th:class="${gradePeriodo.confirmada ? 'confirmado' : 'em-progresso'}" sec:authorize="hasAuthority('Admin')"></td>
                     <td>
                         <a th:href="@{/grades-periodos/visualizar/{id}(id=${gradePeriodo.id})}" class="btn btn-info">Visualizar</a>
                         <a th:href="@{/grades-periodos/editar/{id}(id=${gradePeriodo.id})}" class="btn btn-primary" sec:authorize="hasAuthority('Admin')">Editar</a>
                         <a th:href="@{/grades-periodos/deletar/{id}(id=${gradePeriodo.id})}" class="btn btn-danger" sec:authorize="hasAuthority('Admin')">Excluir</a>
                     </td>
-                    </div>
                 </tr>
             </tbody>
             </table>

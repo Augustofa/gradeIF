@@ -1,6 +1,7 @@
 package iftm.GradeIF.controllers;
 
 import iftm.GradeIF.models.*;
+import iftm.GradeIF.repositories.UsuarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import iftm.GradeIF.repositories.CursoRepository;
 import iftm.GradeIF.repositories.DisciplinaRepository;
 import iftm.GradeIF.repositories.GradePeriodoRepository;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
 import java.util.*;
@@ -25,10 +25,12 @@ public class GradePeriodoController {
     private final GradePeriodoRepository gradePeriodoRepository;
     private final DisciplinaRepository disciplinaRepository;
     private final CursoRepository cursoRepository;
-    public GradePeriodoController(GradePeriodoRepository gradePeriodoRepository, CursoRepository cursoRepository, DisciplinaRepository disciplinaRepository, EntityManager entityManager) {
+    private final UsuarioRepository usuarioRepository;
+    public GradePeriodoController(GradePeriodoRepository gradePeriodoRepository, CursoRepository cursoRepository, DisciplinaRepository disciplinaRepository, UsuarioRepository usuarioRepository) {
         this.gradePeriodoRepository = gradePeriodoRepository;
         this.disciplinaRepository = disciplinaRepository;
         this.cursoRepository = cursoRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @GetMapping
@@ -44,6 +46,13 @@ public class GradePeriodoController {
         model.addAttribute("gradePeriodos", grades);
         
         return "grades-periodos/list-grades";
+    }
+
+    @GetMapping("/ppc")
+    public String listaPpcCursoAluno(@AuthenticationPrincipal UserDetails userDetails){
+        Usuario usuario = usuarioRepository.findByLogin(userDetails.getUsername()).get();
+
+        return "redirect:/grades-periodos/curso/" + usuario.getAluno().getCurso().getId();
     }
 
     @GetMapping("/curso/{idCurso}")

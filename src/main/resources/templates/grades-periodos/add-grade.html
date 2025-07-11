@@ -3,22 +3,22 @@
 <head th:replace="~{fragments/navbar.html :: header}">
 <body>
     <div th:insert="~{fragments/navbar.html :: navbar}"></div>
-    <h1>Criar Grade</h1>
-    <form class="col-lg-6" th:action="@{/grades-periodos/salvar}" th:object="${gradePeriodo}" method="post">
-        <div>
-            <label for="curso">Curso:</label>
-            <select id="curso" th:field="*{nomeCurso}" name="curso">
+    <div th:replace="~{fragments/page-header :: pageHeader('Criar Grade', '/grades-periodos')}"></div>
+    <form class="col-12" th:action="@{/grades-periodos/salvar}" th:object="${gradePeriodo}" method="post">
+        <div class="form-group row mb-2">
+            <label for="curso" class="col-form-label col-1 mr-1">Curso:</label>
+            <select id="curso" class="form-control w-auto p-2" th:field="*{nomeCurso}" name="curso">
                 <option value="">Selecione o Curso</option>
                 <option th:each="curso : ${cursos}" th:value="${curso.nome}" th:text="${curso.nome}"></option>
             </select>
         </div>
-        <div>
-            <label for="periodo">Periodo:</label>
-            <input type="number" th:field="*{periodo}" id="periodo" placeholder="Periodo">
+        <div class="form-group row">
+            <label for="periodo" class="col-form-label col-1 mr-1">Periodo:</label>
+            <input type="number" class="form-control w-auto p-2" th:field="*{periodo}" id="periodo" placeholder="Periodo">
         </div>
 
         <div>
-            <button type="submit">Adicionar Grade</button>
+            <button type="submit" class="btn btn-primary">Adicionar</button>
         </div>
     </form>
 </body>

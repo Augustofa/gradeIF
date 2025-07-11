@@ -1,27 +1,28 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="~{fragments/navbar.html :: header}">
 <body>
     <div>
         <div th:insert="~{fragments/navbar.html :: navbar}"></div>
+        <div th:replace="~{fragments/page-header :: pageHeader('Cursos', null)}"></div>
         <div th:switch="${cursos}">
             <h2 th:case="null">Sem cursos cadastrados</h2>
             <div th:case="*" class="table-responsive">
-                <table class="table table-striped table-responsive">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th sec:authorize="hasAuthority('Admin')">ID</th>
-                            <th>Nome</th>
-                            <th>Descrição</th>
-                            <th>Quant. Semestres</th>
-                            <th sec:authorize="hasAuthority('Admin')">Ações</th>
+                            <th class="col-3">Nome</th>
+                            <th class="col-6" sec:authorize="hasAuthority('Admin')">Descrição</th>
+                            <th class="col-1">Semestres</th>
+                            <th class="col-2">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="curso : ${cursos}">
                             <td th:text="${curso.id}" sec:authorize="hasAuthority('Admin')"></td>
                             <td th:text="${curso.nome}"></td>
-                            <td th:text="${curso.descricao}"></td>
+                            <td th:text="${curso.descricao}" sec:authorize="hasAuthority('Admin')"></td>
                             <td th:text="${curso.quantSemestres}"></td>
                             <td class="td-actions">
                                 <a th:href="@{/grades-periodos/curso/{id}(id=${curso.id})}" class="btn btn-info">PPC</a>

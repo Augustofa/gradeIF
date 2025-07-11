@@ -3,21 +3,19 @@
 <head th:replace="~{fragments/navbar.html :: header}">
 <body>
     <div th:insert="~{fragments/navbar.html :: navbar}"></div>
-    <h1>Criar Professor</h1>
-    <form class="col-lg-6" th:action="@{/professores/salvar}" th:object="${professor}" method="post">
-        <div>
-            <label for="nome">Nome:</label>
-            <input type="text" th:field="*{nome}" id="nome" placeholder="Nome">
+    <div th:replace="~{fragments/page-header :: pageHeader('Criar Professor', '/professores')}"></div>
+    <form class="col-12" th:action="@{/professores/salvar}" th:object="${professor}" method="post">
+        <div class="form-group row mb-2">
+            <label for="nome" class="col-form-label col-1 mr-1">Nome:</label>
+            <input type="text" th:field="*{nome}" id="nome" class="form-control w-auto p-2" placeholder="Nome">
             <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="text-danger"></span>
         </div>
-        <div>
-            <label for="cpf">cpf:</label>
-            <input type="tel" th:field="*{cpf}" id="cpf" placeholder="000.000.000-00">
+        <div class="form-group row">
+            <label for="cpf" class="col-form-label col-1 mr-1">CPF:</label>
+            <input type="tel" th:field="*{cpf}" id="cpf" class="form-control" placeholder="000.000.000-00">
             <span th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}" class="text-danger"></span>
         </div>
-        <div>
-            <button type="submit">Adicionar Professor</button>
-        </div>
+        <button type="submit" class="btn btn-primary">Adicionar</button>
     </form>
 </body>
 </html>

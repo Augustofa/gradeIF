@@ -4,9 +4,8 @@
 <body>
     <div th:insert="~{fragments/navbar.html :: navbar}"></div>
     <link rel="stylesheet" th:href="@{/css/grade-style.css}">
-    <a th:href="@{/cursos}" class="btn btn-outline-primary my-2">
-        <i class="bi bi-chevron-left align-top"></i> Voltar
-    </a>
+    <script th:src="@{/js/montagem-grade.js}"></script>
+    <div th:replace="~{fragments/page-header :: pageHeader(null, '/cursos')}"></div>
     <div th:switch="${gradePeriodos}">
         <h2 th:case="null">Sem grades cadastradas</h2>
         <div th:case="*" class="w-100">
@@ -36,12 +35,17 @@
         </div>
     </div>
     <script th:inline="javascript">
-        var disciplinas = /*[[${disciplinas}]]*/ {};
-        var coresDisciplinas = /*[[${coresDisciplinas}]]*/ {};
+        let disciplinas = /*[[${disciplinas}]]*/ {};
+        let coresDisciplinas = /*[[${coresDisciplinas}]]*/ {};
 
         disciplinas.forEach(disciplina => {
             let tableRow = document.getElementById(disciplina);
-            tableRow.style.background = coresDisciplinas[disciplina];
+            let cor = coresDisciplinas[disciplina];
+            tableRow.style.background = cor;
+            let corContraste = calcCorContraste(cor);
+            tableRow.querySelectorAll('td').forEach(td => {
+                td.style.color = corContraste;
+            })
         })
     </script>
 

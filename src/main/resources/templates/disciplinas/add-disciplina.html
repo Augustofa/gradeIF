@@ -3,55 +3,56 @@
 <head th:replace="~{fragments/navbar.html :: header}">
 <body>
 <div th:insert="~{fragments/navbar.html :: navbar}"></div>
-<h1>Criar Disciplina</h1>
-<form class="col-lg-6" th:action="@{/disciplinas/salvar}" th:object="${disciplina}" method="post">
-    <div>
-        <label for="codigo">Código:</label>
-        <input type="text" th:field="*{codigo}" id="codigo" placeholder="Código">
+<div th:replace="~{fragments/page-header :: pageHeader('Criar Disciplina', '/disciplinas')}"></div>
+<link rel="stylesheet" th:href="@{/css/grade-style.css}">
+<form class="col-12" th:action="@{/disciplinas/salvar}" th:object="${disciplina}" method="post">
+    <div class="form-group row mb-2">
+        <label for="codigo" class="col-form-label col-2">Código:</label>
+        <input type="text" class="form-control col-2 p-2" th:field="*{codigo}" id="codigo" placeholder="Código">
         <span th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}" class="text-danger"></span>
     </div>
-    <div>
-        <label for="nome">Nome:</label>
-        <input type="text" th:field="*{nome}" id="nome" placeholder="Nome">
+    <div class="form-group row mb-2">
+        <label for="nome" class="col-form-label col-2">Nome:</label>
+        <input type="text" class="form-control col-5 p-2" th:field="*{nome}" id="nome" placeholder="Nome">
         <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="text-danger"></span>
     </div>
-    <div>
-        <label for="sala">Sala:</label>
-        <input type="text" th:field="*{sala}" id="sala" placeholder="Sala">
+    <div class="form-group row mb-2">
+        <label for="sala" class="col-form-label col-2">Sala:</label>
+        <input type="text" class="form-control col-2 p-2" th:field="*{sala}" id="sala" placeholder="Sala">
         <span th:if="${#fields.hasErrors('sala')}" th:errors="*{sala}" class="text-danger"></span>
     </div>
-    <div>
-        <label for="professor">Professor:</label>
-        <select id="professor" th:field="*{nomeProfessor}" name="professor">
+    <div class="form-group row mb-2">
+        <label for="professor" class="col-form-label col-2">Professor:</label>
+        <select id="professor" class="form-control w-auto p-2" th:field="*{nomeProfessor}" name="professor">
             <option value="">Selecione o Professor</option>
             <option th:each="professor : ${professores}" th:value="${professor.nome}" th:text="${professor.nome}"></option>
         </select>
         <span th:if="${#fields.hasErrors('professor')}" th:errors="*{professor}" class="text-danger"></span>
     </div>
-    <div>
-        <label for="vagas">Vagas:</label>
-        <input type="number" th:field="*{vagas}" id="vagas" placeholder="Vagas">
+    <div class="form-group row mb-2">
+        <label for="vagas" class="col-form-label col-2">Vagas:</label>
+        <input type="number" class="form-control col-1 p-2" th:field="*{vagas}" id="vagas" placeholder="Vagas">
         <span th:if="${#fields.hasErrors('vagas')}" th:errors="*{vagas}" class="text-danger"></span>
     </div>
-    <div>
-        <label for="creditos">Créditos:</label>
-        <input type="number" th:field="*{creditos}" id="creditos" placeholder="Créditos">
+    <div class="form-group row mb-2">
+        <label for="creditos" class="col-form-label col-2">Créditos:</label>
+        <input type="number" class="form-control col-1 p-2" th:field="*{creditos}" id="creditos" placeholder="Créditos">
         <span th:if="${#fields.hasErrors('creditos')}" th:errors="*{creditos}" class="text-danger"></span>
     </div>
-    <div>
-        <label for="preRequisitos">Pré-requisitos:</label>
-        <select id="preRequisitos" th:field="*{preRequisitosNomes}" name="preRequisitos" multiple="true">
+    <div class="form-group row mb-2">
+        <label for="preRequisitos" class="col-form-label col-2">Pré-requisitos:</label>
+        <select id="preRequisitos" class="form-control w-auto p-2" th:field="*{preRequisitosNomes}" name="preRequisitos" multiple="multiple">
             <option th:each="disciplina : ${disciplinas}" th:value="${disciplina.nome}" th:text="${disciplina.nome}"></option>
         </select>
         <span th:if="${#fields.hasErrors('preRequisitos')}" th:errors="*{preRequisitos}" class="text-danger"></span>
     </div>
-    <div>
-        <label for="horarios">Selecione os horários:</label>
+    <div class="form-group row mb-2">
+        <label for="horarios" class="col-form-label col-2">Selecione os horários:</label>
         <input type="hidden" th:field="*{horariosNomes}" id="horarios">
-        <table class="table table-bordered">
+        <table class="table table-bordered col-10 tabelaHorarios">
             <thead>
-            <tr>
-                <th></th>
+            <tr id="headerHorarios">
+                <th class="bg-light"></th>
                 <th>Segunda</th>
                 <th>Terça</th>
                 <th>Quarta</th>
@@ -62,7 +63,7 @@
             </thead>
             <tbody>
             <tr>
-                <td>19:00</td>
+                <td class="vertHeaderHorarios">19:00</td>
                 <td class="selectable" data-day="Segunda" data-time="19:00"></td>
                 <td class="selectable" data-day="Terça" data-time="19:00"></td>
                 <td class="selectable" data-day="Quarta" data-time="19:00"></td>
@@ -71,7 +72,7 @@
                 <td class="selectable" data-day="Sábado" data-time="19:00"></td>
             </tr>
             <tr>
-                <td>20:50</td>
+                <td class="vertHeaderHorarios">20:50</td>
                 <td class="selectable" data-day="Segunda" data-time="20:50"></td>
                 <td class="selectable" data-day="Terça" data-time="20:50"></td>
                 <td class="selectable" data-day="Quarta" data-time="20:50"></td>
@@ -84,7 +85,7 @@
         <span th:if="${#fields.hasErrors('horarios')}" th:errors="*{horarios}" class="text-danger"></span>
     </div>
     <div>
-        <button type="submit">Adicionar Disciplina</button>
+        <button type="submit" class="btn btn-primary">Adicionar</button>
     </div>
 </form>
 

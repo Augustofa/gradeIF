@@ -4,10 +4,11 @@
 <body>
     <div>
         <div th:insert="~{fragments/navbar.html :: navbar}"></div>
+        <div th:replace="~{fragments/page-header :: pageHeader('Disciplinas', null)}"></div>
         <div th:switch="${disciplinas}">
             <h2 th:case="null">Sem disciplinas cadastradas</h2>
-            <div th:case="*">
-                <table class="table table-striped table-responsive">
+            <div th:case="*" class="table-responsive">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th sec:authorize="hasAuthority('Admin')">ID</th>

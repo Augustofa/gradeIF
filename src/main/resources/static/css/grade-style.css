@@ -19,6 +19,7 @@ table {
     }
 }
 
+
 .btn-responsive {
     transition: all 0.3s ease;
     white-space: nowrap;
@@ -30,32 +31,11 @@ table {
     #tabelaHorarios, #tabelaDetalhes{
         font-size: 0.7rem;
     }
-    .h1Responsivo {
-        font-size: 1.5rem;
-    }
-    .h2Responsivo {
-        font-size: 1.2rem;
-    }
-    .btn-responsive {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.8rem;
-    }
 }
 
 @media (max-width: 576px) {
     #tabelaHorarios, #tabelaDetalhes {
         font-size: 0.5rem;
-    }
-    .h1Responsivo {
-        font-size: 1rem;
-    }
-    .h2Responsivo {
-        font-size: 0.8rem;
-    }
-    .btn-responsive {
-        padding: 0.2rem 0.4rem;
-        font-size: 0.7rem;
-        min-width: 30px;
     }
 }
 

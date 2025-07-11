@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--suppress JSDeprecatedSymbols, JSUnresolvedReference -->
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/navbar.html :: header}">
 <body>
@@ -10,24 +11,25 @@
     <a th:href="@{/grades-alunos}" class="btn btn-outline-primary my-2">
         <i class="bi bi-chevron-left align-top"></i> Voltar
     </a>
-    <h1 class="h1Responsivo" th:text="'Editar Grade de ' + ${aluno.nome}"></h1>
-    <form class="col-lg-12" th:action="'/grades-alunos/editar/' + ${gradeAluno.id} + '/confirmar'" th:object="${gradeAluno}" method="post">
-        <div>
-            <label for="idDiscSelecionada">Disciplina:</label>
-            <select id="idDiscSelecionada" name="idDiscSelecionada">
-                <option selected disabled value="">Selecione uma disciplina</option>
-                <option th:each="disciplina : ${disciplinas}" th:value="${disciplina.id}" th:text="${disciplina.nome + ' (' + (disciplina.periodo == 99 ? 'Optativa' : disciplina.periodo + 'º') + ')'}" th:name="idDiscSelecionada"></option>
-            </select>
-            <input type="submit" th:formaction="'/grades-alunos/editar/' + ${gradeAluno.id} + '/add'" value="Adicionar Disciplina" class="btnConfirmar">
+    <h1 class="h1-responsivo mb-3" th:text="'Horários - ' + ${gradeAluno.periodo}"></h1>
+    <form th:action="'/grades-alunos/editar/' + ${gradeAluno.id} + '/confirmar'" th:object="${gradeAluno}" method="post">
+        <div class="ml-3 mb-3">
+            <div class="mb-1 form-row align-items-center">
+                <label for="idDiscSelecionada" class="mobile-hidden mr-1 mb-0">Disciplina:</label>
+                <select id="idDiscSelecionada" name="idDiscSelecionada" class="form-control mr-2 w-auto">
+                    <option selected disabled value="">Selecione uma disciplina</option>
+                    <option th:each="disciplina : ${disciplinas}" th:value="${disciplina.id}" th:text="${disciplina.nome + ' (' + (disciplina.periodo == 99 ? 'Optativa' : disciplina.periodo + 'º') + ')'}" th:name="idDiscSelecionada"></option>
+                </select>
+                <input type="submit" th:formaction="'/grades-alunos/editar/' + ${gradeAluno.id} + '/add'" value="Adicionar" class="btn-adicionar btn btn-primary py-1">
+            </div>
+            <div class="form-row">
+                <label for="corDisciplina" class="mb-0 mr-1">Cor da Disciplina: </label>
+                <input type="text" id="corDisciplina" name="corDisciplina" value="#ffffff" title="Escolha uma cor:">
+            </div>
+            <div th:if="${discHorarios.isEmpty()}" class="form-row mt-3">
+                <input type="submit" th:formaction="'/grades-alunos/editar/' + ${gradeAluno.id} + '/auto'" value="Montagem Automática" class="btnConfirmar btn btn-sm btn-info">
+            </div>
         </div>
-        <div>
-            <label for="corDisciplina">Cor da Disciplina: </label>
-            <input type="text" id="corDisciplina" name="corDisciplina" value="#ffffff" title="Escolha uma cor:">
-        </div>
-        <div th:if="${discHorarios.isEmpty()}">
-            <input type="submit" th:formaction="'/grades-alunos/editar/' + ${gradeAluno.id} + '/auto'" value="Solicitar Montagem Automática" class="btnConfirmar">
-        </div>
-        <br>
         <div class="table-responsive">
             <input type="hidden" id="horarios">
             <table id="tabelaHorarios" class="table table-bordered w-100" >
@@ -63,8 +65,8 @@
             <div class="alert alert-danger d-none" role="alert" id="erro-grade">Erro de compatibilidade na grade!</div>
             <div class="alert alert-danger d-none alerta" role="alert" id="erro-pre-requisitos">Pré-requisitos não cumpridos: </div>
         </div>
-        <div>
-            <button type="submit" class="btnConfirmar" onclick="confirmarGrade(event)">Confirmar Grade</button>
+        <div th:if="not ${gradeAluno.confirmada}">
+            <button type="submit" class="btnConfirmar btn btn-sm btn-success" onclick="confirmarGrade(event)">Confirmar Grade</button>
         </div>
 
 
@@ -117,15 +119,15 @@
 
     <script th:inline="javascript">
         document.addEventListener("DOMContentLoaded", function() {
-            var horarios = /*[[${discHorarios}]]*/ [];
-            var preRequisitos = /*[[${preRequisitos}]]*/ [];
-            var coresDisciplinas = /*[[${coresDisciplinas}]]*/ {};
+            const horarios = /*[[${discHorarios}]]*/ [];
+            const preRequisitos = /*[[${preRequisitos}]]*/ [];
+            const coresDisciplinas = /*[[${coresDisciplinas}]]*/ {};
 
-            var count = horarios.length;
+            let count = horarios.length;
             horarios.forEach(horario => {
                 let nomeDisciplina = `${horario.nome}`
                 let preReqOk = true;
-                if(count == 1){
+                if(count === 1){
                     preReqOk = `${horario.preReqCumpridos}`;
                     preReqOk = (preReqOk == "true");
                     if(!preReqOk){
@@ -146,7 +148,7 @@
                 if(valido){
                     cellList.forEach(cell => {
                         cell.textContent = nomeDisciplina;
-                        var cor = coresDisciplinas[nomeDisciplina];
+                        const cor = coresDisciplinas[nomeDisciplina];
                         cell.style.backgroundColor = cor;
                         cell.style.color = calcCorContraste(cor);
                         document.getElementById(nomeDisciplina).style.color = calcCorContraste(cor);
@@ -154,17 +156,18 @@
                 }else{
                     if(preReqOk){
                         document.getElementById(nomeDisciplina).style.backgroundColor = "rgb(255, 200, 200)";
-                    // }else{
-                    //     document.getElementById(codigo).style.backgroundColor = "rgb(255, 180, 100)";
+                        document.getElementById(nomeDisciplina).style.color = "rgb(0, 0, 0)";
                     }
 
                     cellList.forEach(cell => {
                         if(cell.textContent !== ""){
                             cell.textContent.split('-').forEach(cellConflito => {
                                 document.getElementById(cellConflito).style.backgroundColor = "rgb(255, 200, 200)";
+                                document.getElementById(cellConflito).style.color = "rgb(0, 0, 0)";
                             });
                             cell.innerHTML += "<br> - <br>" + nomeDisciplina;
                             cell.style.backgroundColor = "rgb(255, 200, 200)";
+                            cell.style.color = "rgb(0, 0, 0)";
                         }else{
                         //     if(!preReqOk){
                         //         cell.style.backgroundColor = "rgb(255, 180, 100)";
@@ -174,7 +177,7 @@
                     })
                     const errorMessage = document.getElementById('erro-grade');
                     errorMessage.classList.remove('d-none');
-                    let botoes = document.querySelectorAll('.btnConfirmar');
+                    let botoes = document.querySelectorAll('.btn-adicionar');
                     botoes.forEach(botao => {
                         botao.disabled = true;
                     });

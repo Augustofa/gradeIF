@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="~{fragments/navbar.html :: header}">
 <body>
-    <div>
+    <div class="w-100">
         <div th:insert="~{fragments/navbar.html :: navbar}"></div>
-        <div th:switch="${horarios}">
+        <div th:replace="~{fragments/page-header :: pageHeader('Horários', null)}"></div>
+        <div th:switch="${horarios}" >
             <h2 th:case="null">Sem horários cadastrados</h2>
-            <div th:case="*">
-                <table class="table table-striped table-responsive">
+            <div th:case="*" class="table-responsive">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>
