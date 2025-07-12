@@ -32,8 +32,7 @@ public class Disciplina {
     @Transient
     private int periodo = 99;
     
-    @ManyToMany(fetch = FetchType.LAZY)
-    // @Convert(converter = DisciplinaConverter.class)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Disciplina> preRequisitos;
     @Transient
     private List<String> preRequisitosNomes;

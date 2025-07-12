@@ -3,7 +3,26 @@
 <head th:replace="~{fragments/navbar.html :: header}">
 <body>
     <div th:insert="~{fragments/navbar.html :: navbar}"></div>
-    <div th:replace="~{fragments/page-header :: pageHeader('Grades de Alunos', null)}"></div>
+    <div style="display: flex;" class="justify-content-between">
+        <div th:replace="~{fragments/page-header :: pageHeader('Grades de Alunos', null)}" class="col-6"></div>
+        <div id="campo-busca" class="col-6 justify-content-end" sec:authorize="hasAuthority('Admin')">
+            <form class="w-75" th:action="@{/grades-alunos/buscar}" method="GET">
+                <div class="input-group">
+                    <input type="text" id="input-busca" name="nome" th:value="${param.nome}" class="form-control" placeholder="Digite o nome para buscar">
+                    <div class="input-group-append" th:if="${param.nome}">
+                        <button class="btn input-group-text bg-white" style="border-left-style: none" onclick="resetBusca()" type="submit">
+                            <i class="bi bi-x align-top"></i>
+                        </button>
+                    </div>
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary" type="submit" style="border: none;">
+                            <i class="bi bi-search align-top" style="color: white;"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
     <div th:switch="${gradesAlunos}">
         <h2 th:case="null">Sem grades cadastradas</h2>
         <div th:case="*" class="table-responsive">
@@ -37,5 +56,11 @@
 
         <a th:href="@{/grades-alunos/criar}" class="btn btn-success" sec:authorize="hasAuthority('Admin')">Adicionar Nova Grade</a>
     </div>
+
+    <script>
+        function resetBusca(){
+            $("#input-busca").val("");
+        }
+    </script>
 </body>
 </html>

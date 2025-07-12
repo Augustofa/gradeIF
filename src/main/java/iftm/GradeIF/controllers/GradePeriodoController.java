@@ -133,7 +133,7 @@ public class GradePeriodoController {
 
     @PostMapping("/editar/{id}/add")
     public String formularioAdicionarDisciplinaGrade(@PathVariable("id") int id, @ModelAttribute GradePeriodo gradePeriodo, BindingResult result, Model model) {
-        if (result.hasErrors()) {
+        if (result.hasErrors() || gradePeriodo.getIdDiscSelecionada() == null) {
             System.out.println(result.getAllErrors());
             return "grades-periodos/edit-grade";
         }

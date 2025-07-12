@@ -1,8 +1,8 @@
 package iftm.GradeIF.controllers;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import iftm.GradeIF.models.*;
 import iftm.GradeIF.repositories.*;
@@ -13,11 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -52,7 +48,21 @@ public class GradeAlunoController {
         }
 
         return "grades-alunos/list-grades";
+    }
+
+    @GetMapping("/buscar")
+    public String buscaGradeAlunos(Model model, @RequestParam(required = false) String nome, @AuthenticationPrincipal UserDetails userDetails) {
+        Usuario usuario = usuarioRepository.findByLogin(userDetails.getUsername()).get();
+        System.out.println(usuario.getPermissoes());
+        if(usuario.getAluno() == null){
+            model.addAttribute("gradesAlunos", gradeAlunoRepository.findAllByAluno_NomeContainsIgnoreCase(nome, Sort.by("periodo").descending()));
+        }else{
+            List<GradeAluno> gradesAluno = gradeAlunoRepository.findByAluno(usuario.getAluno(), Sort.by("periodo").descending());
+            model.addAttribute("gradesAlunos", gradesAluno);
         }
+
+        return "grades-alunos/list-grades";
+    }
 
     @GetMapping("/criar")
     public String formularioCriarGradeAluno(GradeAluno gradeAluno, Model model) {
@@ -120,18 +130,20 @@ public class GradeAlunoController {
 
         DisciplinaController.getHorariosDisciplinas(discHorarios, disciplinasDisponiveis, gradeAluno.getDisciplinas());
         gradePeriodoController.getPeriodosDisciplinas(disciplinasDisponiveis, gradeAluno.getAluno().getCurso());
+        Map<Integer, List<Disciplina>> disciplinasPeriodo = disciplinasDisponiveis.stream()
+                .collect(Collectors.groupingBy(Disciplina::getPeriodo, LinkedHashMap::new, Collectors.toList()));
 
         model.addAttribute("coresDisciplinas", gradeAluno.getCoresDisciplinas());
         model.addAttribute("discHorarios", discHorarios);
         model.addAttribute("gradeAluno", gradeAluno);
         model.addAttribute("aluno", gradeAluno.getAluno());
-        model.addAttribute("disciplinas", disciplinasDisponiveis);
+        model.addAttribute("disciplinasPeriodo", disciplinasPeriodo);
         return "grades-alunos/edit-grade";
     }
 
     @PostMapping("/editar/{id}/add")
     public String formularioAdicionarDisciplinaGrade(@PathVariable("id") int id, @ModelAttribute GradeAluno gradeAluno, BindingResult result, Model model) {
-        if (result.hasErrors()) {
+        if (result.hasErrors() || gradeAluno.getIdDiscSelecionada() == null) {
             System.out.println(result.getAllErrors());
             return "grades-alunos/edit-grade";
         }

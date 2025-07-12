@@ -5,6 +5,8 @@
 <div th:insert="~{fragments/navbar.html :: navbar}"></div>
 <div th:replace="~{fragments/page-header :: pageHeader('Criar Disciplina', '/disciplinas')}"></div>
 <link rel="stylesheet" th:href="@{/css/grade-style.css}">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <form class="col-12" th:action="@{/disciplinas/salvar}" th:object="${disciplina}" method="post">
     <div class="form-group row mb-2">
         <label for="codigo" class="col-form-label col-2">Código:</label>
@@ -40,8 +42,8 @@
         <span th:if="${#fields.hasErrors('creditos')}" th:errors="*{creditos}" class="text-danger"></span>
     </div>
     <div class="form-group row mb-2">
-        <label for="preRequisitos" class="col-form-label col-2">Pré-requisitos:</label>
-        <select id="preRequisitos" class="form-control w-auto p-2" th:field="*{preRequisitosNomes}" name="preRequisitos" multiple="multiple">
+        <label for="preRequisitos" class="col-form-label col-2 pr-0">Pré-requisitos:</label>
+        <select id="preRequisitos" class="form-control w-auto select2" th:field="*{preRequisitosNomes}" name="preRequisitos" multiple="multiple">
             <option th:each="disciplina : ${disciplinas}" th:value="${disciplina.nome}" th:text="${disciplina.nome}"></option>
         </select>
         <span th:if="${#fields.hasErrors('preRequisitos')}" th:errors="*{preRequisitos}" class="text-danger"></span>
@@ -58,7 +60,6 @@
                 <th>Quarta</th>
                 <th>Quinta</th>
                 <th>Sexta</th>
-                <th>Sábado</th>
             </tr>
             </thead>
             <tbody>
@@ -69,7 +70,6 @@
                 <td class="selectable" data-day="Quarta" data-time="19:00"></td>
                 <td class="selectable" data-day="Quinta" data-time="19:00"></td>
                 <td class="selectable" data-day="Sexta" data-time="19:00"></td>
-                <td class="selectable" data-day="Sábado" data-time="19:00"></td>
             </tr>
             <tr>
                 <td class="vertHeaderHorarios">20:50</td>
@@ -78,7 +78,6 @@
                 <td class="selectable" data-day="Quarta" data-time="20:50"></td>
                 <td class="selectable" data-day="Quinta" data-time="20:50"></td>
                 <td class="selectable" data-day="Sexta" data-time="20:50"></td>
-                <td class="selectable" data-day="Sábado" data-time="20:50"></td>
             </tr>
             </tbody>
         </table>
@@ -108,6 +107,11 @@
                 console.log(horariosInput.value);
             });
         });
+    });
+
+    $('.select2').select2({
+        multiple: true,
+        placeholder: "Selecione Pré-Requisito(s)"
     });
 </script>
 </body>

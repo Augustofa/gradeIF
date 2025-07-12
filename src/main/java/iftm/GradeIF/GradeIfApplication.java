@@ -3,6 +3,7 @@ package iftm.GradeIF;
 import java.io.InputStream;
 import java.util.List;
 
+import iftm.GradeIF.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -23,14 +24,6 @@ import iftm.GradeIF.models.Disciplina;
 import iftm.GradeIF.models.GradePeriodo;
 import iftm.GradeIF.models.Horario;
 import iftm.GradeIF.models.Professor;
-import iftm.GradeIF.repositories.AlunoRepository;
-import iftm.GradeIF.repositories.CursoRepository;
-import iftm.GradeIF.repositories.DisciplinaRepository;
-import iftm.GradeIF.repositories.GradeAlunoRepository;
-import iftm.GradeIF.repositories.GradeFormRepository;
-import iftm.GradeIF.repositories.GradePeriodoRepository;
-import iftm.GradeIF.repositories.HorarioRepository;
-import iftm.GradeIF.repositories.ProfessorRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.transaction.Transactional;
@@ -50,20 +43,20 @@ public class GradeIfApplication implements CommandLineRunner {
 	private final ProfessorRepository repositoryProfessores;
 	private final HorarioRepository repositoryHorarios;
 	private final DisciplinaRepository repositoryDisciplinas;
-	private final GradePeriodoRepository repositoryGradePeriodo;
+	private final GradeRepository gradeRepository;
 	private final ObjectMapper objectMapper;
 	private final EntityManager entityManager;
 
 	@Autowired
 	private final EntityManagerFactory entityManagerFactory;
 
-	public GradeIfApplication(AlunoRepository repositoryAlunos, ObjectMapper objectMapper, CursoRepository repositoryCursos, ProfessorRepository repositoryProfessores, HorarioRepository repositoryHorarios, DisciplinaRepository repositoryDisciplinas, EntityManager entityManager, EntityManagerFactory entityManagerFactory, GradePeriodoRepository repositoryGradePeriodo, GradeAlunoRepository repositoryGradeAlunos, GradeFormRepository repositoryGradeForm) {
+	public GradeIfApplication(AlunoRepository repositoryAlunos, ObjectMapper objectMapper, CursoRepository repositoryCursos, ProfessorRepository repositoryProfessores, HorarioRepository repositoryHorarios, DisciplinaRepository repositoryDisciplinas, EntityManager entityManager, EntityManagerFactory entityManagerFactory, GradePeriodoRepository repositoryGradePeriodo, GradeAlunoRepository repositoryGradeAlunos, GradeFormRepository repositoryGradeForm, GradeRepository gradeRepository) {
 		this.repositoryAlunos = repositoryAlunos;
 		this.repositoryCursos = repositoryCursos;
 		this.repositoryProfessores = repositoryProfessores;
 		this.repositoryHorarios = repositoryHorarios;
 		this.repositoryDisciplinas = repositoryDisciplinas;
-		this.repositoryGradePeriodo = repositoryGradePeriodo;
+        this.gradeRepository = gradeRepository;
 		this.objectMapper = objectMapper;
 		this.entityManager = entityManager;
 		this.entityManagerFactory = entityManagerFactory;
@@ -113,7 +106,7 @@ public class GradeIfApplication implements CommandLineRunner {
 		// repositoryDisciplinas.deleteAll();
 		if(repositoryDisciplinas.count() == 0) {
 			try (InputStream inputStream = TypeReference.class.getResourceAsStream("/data/disciplinas.json")) {
-				DisciplinaController disciplinaController = new DisciplinaController(repositoryDisciplinas, repositoryProfessores, repositoryHorarios, entityManager);
+				DisciplinaController disciplinaController = new DisciplinaController(repositoryDisciplinas, repositoryProfessores, repositoryHorarios, gradeRepository, entityManager);
 				disciplinaController.saveAllDisciplinas(objectMapper.readValue(inputStream, new TypeReference<List<Disciplina>>(){}));
 			}
 		}

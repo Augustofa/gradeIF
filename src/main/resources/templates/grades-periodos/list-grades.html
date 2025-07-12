@@ -6,7 +6,7 @@
     <div th:replace="~{fragments/page-header :: pageHeader('Grades de Períodos', null)}"></div>
     <div th:switch="${gradePeriodos}">
         <h2 th:case="null">Sem grades cadastradas</h2>
-        <div th:case="*" class="table-responsive">
+        <div th:case="*" class="table-responsive tabela-scroll">
             <table class="table table-striped">
             <thead>
                 <tr>

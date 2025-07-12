@@ -23,7 +23,7 @@ public abstract class Grade {
 
     private int tipo;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     List<Disciplina> disciplinas;
     @Transient
     Integer idDiscSelecionada;

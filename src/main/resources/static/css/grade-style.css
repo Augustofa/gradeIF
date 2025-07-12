@@ -27,6 +27,10 @@ table {
     text-overflow: ellipsis;
 }
 
+#idDiscSelecionada {
+    width: auto;
+}
+
 @media (max-width: 768px) {
     #tabelaHorarios, #tabelaDetalhes{
         font-size: 0.7rem;
@@ -36,6 +40,15 @@ table {
 @media (max-width: 576px) {
     #tabelaHorarios, #tabelaDetalhes {
         font-size: 0.5rem;
+    }
+    #tabelaHorarios td,
+    #tabelaHorarios th,
+    #tabelaDetalhes td,
+    #tabelaDetalhes th {
+        padding: 0.3rem;
+    }
+    #idDiscSelecionada {
+        width: 60%;
     }
 }
 
@@ -50,10 +63,5 @@ table {
 }
 
 @media (max-width: 576px) {
-    #tabelaHorarios td,
-    #tabelaHorarios th,
-    #tabelaDetalhes td,
-    #tabelaDetalhes th {
-        padding: 0.3rem;
-    }
+
 }

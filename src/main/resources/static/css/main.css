@@ -12,7 +12,19 @@
         font-weight: bold;
         color: midnightblue;
     }
+}
 
+#campo-busca {
+    display: flex;
+    align-items: center;
+    align-content: baseline;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.tabela-scroll {
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
 @media (max-width: 768px) {

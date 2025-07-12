@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import iftm.GradeIF.models.*;
+import iftm.GradeIF.repositories.GradeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,18 +28,18 @@ import jakarta.validation.Valid;
 public class DisciplinaController {
 
     private final DisciplinaRepository disciplinaRepository;
-
     private final ProfessorRepository professorRepository;
-
     private final HorarioRepository horarioRepository;
+    private final GradeRepository gradeRepository;
 
     @PersistenceContext
     private final EntityManager entityManager;
 
-    public DisciplinaController(DisciplinaRepository disciplinaRepository, ProfessorRepository professorRepository, HorarioRepository horarioRepository, EntityManager entityManager) {
+    public DisciplinaController(DisciplinaRepository disciplinaRepository, ProfessorRepository professorRepository, HorarioRepository horarioRepository, GradeRepository gradeRepository, EntityManager entityManager) {
         this.disciplinaRepository = disciplinaRepository;
         this.professorRepository = professorRepository;
         this.horarioRepository = horarioRepository;
+        this.gradeRepository = gradeRepository;
         this.entityManager = entityManager;
     }
 
@@ -148,7 +149,23 @@ public class DisciplinaController {
     @GetMapping("/deletar/{id}")
     public String deletarDisciplina(@PathVariable("id") int id, Model model) {
         Disciplina disciplina = disciplinaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("ID inválido: " + id));
+        List<Disciplina> disciplinasRelacionadas = disciplinaRepository.findAllByPreRequisitosContaining(disciplina);
+        for (Disciplina d : disciplinasRelacionadas) {
+            d.getPreRequisitos().removeIf(pr -> pr.getId() == disciplina.getId());
+        }
+        disciplinaRepository.saveAll(disciplinasRelacionadas);
+
+        List<Grade> gradesRelacionadas = gradeRepository.findAllByDisciplinasContaining(disciplina);
+        for(Grade g : gradesRelacionadas){
+            if(g.getDisciplinas().contains(disciplina)){
+                g.getDisciplinas().remove(disciplina);
+                g.setConfirmada(false);
+            }
+        }
+        gradeRepository.saveAll(gradesRelacionadas);
+
         disciplinaRepository.delete(disciplina);
+
         return "redirect:/disciplinas";
     }
 

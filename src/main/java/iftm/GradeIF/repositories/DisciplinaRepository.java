@@ -11,4 +11,5 @@ import java.util.List;
 public interface DisciplinaRepository extends JpaRepository<Disciplina, Integer>{
     List<Disciplina> findByCodigo(String codigo);
     List<Disciplina> findByNome(String nome);
+    List<Disciplina> findAllByPreRequisitosContaining(Disciplina preRequisito);
 }
