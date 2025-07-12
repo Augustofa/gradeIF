@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{fragments/navbar.html :: header}">
+<body class="d-flex flex-column min-vh-100">
+  <div th:insert="~{fragments/navbar.html :: navbar}"></div>
+  <div class="text-center flex-grow-1 d-flex align-items-center justify-content-center">
+    <div class="text-center">
+      <h1 class="display-4 text-danger">404</h1>
+      <p class="lead">Página Não Encontrada</p>
+      <p class="mb-4">A página que você tentou acessar não existe ou foi movida.</p>
+      <a href="/" class="btn btn-primary">Voltar para a Página Inicial</a>
+    </div>
+  </div>
+</body>
+</html>
